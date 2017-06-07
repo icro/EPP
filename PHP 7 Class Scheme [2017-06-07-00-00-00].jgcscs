@@ -1,0 +1,9505 @@
+﻿JGCSCS
+5
+PHP 7 Class Scheme [2017-06-07-00-00-00]
+*.php
+icro
+
+http://github.com/icro/EPP
+http://php.net
+TRUE
+
+
+234
+Experimental PHP 7 class color scheme.
+
+Names should be:
+- classes: PascalCase
+- constants: UPPER_CASE
+- methods: camelCase
+- properties: camelCase
+- variables: camelCase
+- functions: camelCase
+- keywords: lowercase
+
+Notes:
+- alternate block syntax is not supported (if-endif, while-endwhile, ...)
+- <?hh will also trigger the scheme, but I've not implemented the hhvm specific keywords, like 'type'
+- this scheme is based on php 7.1.5
+- if you don't like this funky disco dance feel free to edit it
+- feedback is welcome, suggestions too
+
+Issues:
+- main.k32: hhvm type hints for constants and properties
+  EPP doesn't use a lexer. It is near impossible to write a regex-based scheme for a complex syntax like HH.
+  One of the problems are the separation between typehints, keywords, and the PHP7 AST.
+  This scheme will not support type hints or generics for properties and constants.
+
+  main.k32 is commented out; using it, will create side effects with main.k20 and others:
+  You have to extend the not-before-keywords in main.k20 to allow
+  protected array const array = array(), where the first 'array' is the type hint, the second
+  'array' is the constant name, allowed in AST, and the third 'array' is a keyword.
+  
+- main.k10: function signatures
+  1. strings in function signatures will not be highlighted: patterns and regex will be ignored
+  2. using ")" within the function signature will terminate the matching at the first occourence of ')',
+      e. g. function(array $array = array(), int $index = 0x00)
+  3. using ")" within escaped  strings will also terminate the matching
+
+Todo:
+- check patterns for names
+
+Other authors:
+- Regex highlighting was originally written 2010 by Jeff Roberson for scheme "PHP Hypertext Preprocessor - JMRware"
+
+Features:
+- highlight type hints and return values in method signatures
+- allows <? (you should not use it), <?php, and <?hh
+- special comment highlight for hints, warnings, errors, and success messages
+- special comment highlight for multiline and singleline documentation
+- functional comment synatx for document sections (lige regions in c#)
+- functional comment syntax for sticky notes
+- highlight interpretable chars, like \n \t etc., within double quoted strings and heredocs
+- highlight {:[a-zA-Z0-9_\.-#]+} within single quoted strings, double quoted strings, heredocs, and nowdocs as text pattern
+- highlight single quoted strings and nowdocs as characters
+- highlight double quoted strings and heredocs as character strings
+- different highlights for binary numbers and hex numbers with 2n, 2^n, and 2n-1 length
+- custom prefixes for special keywords (this is for personal use, because PHP doesn't like the concept of static classes):
+  __attr_*, __bit_*, __byte_*, __chr_*, __class_*, __const_*, __dbl_*,
+  __dir_*, __entity_*, __file_*, __flag_*, __ini_*, __int_*, __interface_*, __str_*, __tpl_*, __tuple_*, __trait_*,
+  __type_*, __value_*, __yaml_*
+  (NOTE: php.net says you should not use the prefix __ in userland. I like to be an anarchist.)
+- class prefix Spl* (standard php library) highlights classname
+- predefined Spl class highlight
+- group for magic constants
+- classname::class as magic constant
+- keywords grouped
+- context based keywords with different highlights for "new static", "new self", and "throw new"
+- supports new AST, like "const foreach = 100;" or "function break(){};"
+  php.net wrote: keywords are allowed as property, constant, and method names of classes, interfaces and traits,
+  except that class may not be used as constant name
+- highlight primitives for type hints, e. g. "int", "float", "array".
+- separate highlights for "array" (type hint), "array()" (data type) and array (method)
+- separate keywords for functional keywords, like "foreach()" vs "clone"
+- grouped operators by increment/decrement, ternary, assign, arithmetic and comparison
+- highlight ","
+- highlight ";"
+- overload accessors for variables
+- highlight referenced &$var
+- highlight variable aliases like $$var, $t->$var, t::$$var
+- highlight variables $_foo for private context
+- highlight variables $__foo for local context
+
+Doxygen api:
+- custom \rtype for return types
+- param, param[in], param[out], memberof, fn, extends, implements, copybrief, copydoc
+  highlight 2nd argument as type
+- param, param[in], param[out]
+  highlight 3rd argument as variable
+- fn highlight 3rd argument as function
+
+The following colors are not in use:
+- local link
+- internet link
+- constant name
+- date and time
+- address
+- markup highlight
+
+Color info:
+- markup highlight is used to display invalid matches in this scheme
+- code highlight is used to highlight limited coding errors
+
+Other stuff:
+- navigation scheme for the functional comments exists; click download in file navigation options
+- a color scheme also exists, but it's triggy to install it; download: 
+
+Color palette:
+
+[SyntaxColors]
+Count=1
+Name0=ILLI
+
+[SyntaxColors0]
+FG0=16777215
+BG0=0
+FG1=32832
+BG1=13434828
+FG2=16777215
+BG2=0
+Style2=--U
+FG3=16777215
+BG3=0
+Style3=--U
+FG4=16777215
+BG4=0
+Style4=-I-
+Style5=B--
+Style6=BI-
+FG7=8454016
+Style7=B--
+FG8=15000804
+BG8=0
+Style8=B--
+FG9=16776960
+FG10=8421504
+Style10=-I-
+FG11=8421504
+BG11=0
+FG12=8437824
+FG13=16776960
+Style13=B--
+FG14=16776960
+BG14=3355443
+Style14=B--
+FG15=16777120
+FG16=255
+BG16=16777215
+FG17=9868950
+BG17=2105376
+FG18=10053222
+BG18=2105376
+FG19=16777215
+BG19=2105376
+FG20=26367
+FG21=16777164
+BG21=0
+FG22=255
+BG22=16777215
+FG23=255
+BG23=16777215
+FG24=13434828
+FG25=16776960
+Style25=B--
+FG26=10551295
+Style26=B--
+FG27=65408
+BG27=20512
+Style27=B--
+FG28=65280
+BG28=16416
+Style28=-I-
+FG29=65535
+BG29=16448
+Style29=-I-
+FG30=33023
+BG30=8256
+Style30=-I-
+FG31=8388863
+BG31=2097232
+Style31=-I-
+FG32=255
+BG32=16777215
+FG33=255
+BG33=2097216
+Style33=-I-
+FG34=8421631
+BG34=3158080
+Style34=B--
+FG35=10551295
+BG35=3162176
+Style35=B--
+FG36=65280
+BG36=16384
+Style36=B--
+FG37=4210752
+BG37=0
+FG38=5263440
+BG38=0
+Style38=-I-
+FG39=12632256
+BG39=0
+Style39=-I-
+FG40=12632256
+BG40=0
+Style40=BI-
+FG41=10551295
+BG41=0
+FG42=8421631
+FG43=20512
+BG43=65408
+Style43=-I-
+FG44=0
+BG44=16777215
+BG45=12304
+FG46=-16777203
+FG47=8421504
+FG48=8421504
+FG49=0
+BG49=16777088
+FG50=0
+BG50=8454143
+FG51=0
+BG51=8421631
+FG52=32832
+BG52=0
+FG53=16776960
+BG53=0
+FG54=32832
+BG54=-16777201
+FG55=3355443
+BG55=3355443
+FG56=255
+Style56=--U
+FG57=0
+BG57=61695
+BG58=2097216
+BG59=2113536
+4470
+<?PHP
+
+#@tests
+#:scheme:
+	#:tags:
+
+?><?
+	// 1. short opening tag not recommended
+	// 2. closing tag not recommended
+?>
+
+<?php
+	// whitespace or BOM before opening tag not allowed
+?>
+
+<?=$foo
+	// invalid opening not allowed
+?>
+
+<?xx
+	// unknown opening not allowed
+?><?hh
+
+	// hhvm code
+
+?><?php
+
+	// php code
+
+?>	no php code here;
+	end of tag test...<?php
+	#::
+	#:main:
+		#:comments:
+			#:singleline:
+				#:default:
+				
+					// comment
+					 # comment
+					
+				#::
+				#:documentation:
+				
+					//!> property descriptions used by doxygen
+					
+				#::
+				#:functional:
+					#:sections:
+					
+						// section start:
+						#:test:
+						
+						// section end:
+						#::
+						
+						// sections will be loaded into the file navigator scheme as nested entry
+						
+					#::
+					#:bookmark:
+					
+						//@ hello
+						 #@ world
+						
+						// bookmarks will be loaded into the file navigator scheme as global entry
+						
+					#::
+				#::
+				#:informational:
+				
+					//+ success
+					 #+ success
+					
+					//++ success, whole line
+					 #++ success, whole line
+					
+					//! info
+					 #! info
+					
+					//!! info, whole line
+					 #!! info, whole line
+					
+					//~ warning
+					 #~ warning
+					
+					//~~ warning, whole line
+					 #~~ warning, whole line
+					
+					//- error
+					 #- error
+					
+					//-- error, whole line
+					 #-- error, whole line
+					
+				#::
+			#::
+			#:multi line:
+				#:default:
+				
+					/*
+						default
+					*/
+
+				#::
+				#:documentation:
+				
+					/**
+					 * Documentation
+					 */
+					
+					/**
+					 * Doxygen api keys
+					 * 
+					 * Allows '\' and '@' as prefix.
+					 * Maybe you have to change some things for other documentators.
+					 * 
+					 * \par Default API
+					 * 
+					 * \param int $a The first int.
+					 * \param[in] int $b Nothing
+					 * \param[out] int $b Who knows...
+					 * \return Another Alice
+					 * 
+					 * \ingroup ILLI_Core_Std_IObject
+					 * \fn Alice& Alice::test($a, &$b)
+					 * \memberof Alice
+					 * \extends Alica
+					 * \implements IAlica
+					 * \copydoc Alice::test
+					 * \copybrief Alice::test
+					 * 
+					 * \par Extended API
+					 * 
+					 * \rtype Alice&
+					 * 
+					 * \par Other keys
+					 * 
+					 * Keys, not mentioned here, where interepreted as key-value-pair.
+					 * 
+					 * \foobar as as as a sa s as *
+					 * 		test
+					 * @foobaz test
+					 */
+					
+				#::
+				#:informational:
+				
+					/*+
+						success
+					*/
+					
+					/*!
+						info
+					*/
+					
+					/*~
+						warning
+					*/
+					
+					/*-
+						error
+					*/
+					
+				#::
+			#::
+		#::
+		#:brackets:
+		
+			[] {} ()
+			
+		#::
+		#:operators:
+			#:concat:
+			
+				.
+				.=
+
+			#::
+			#:variadic:
+			
+				...
+
+			#::
+			#:increment/decrement:
+
+				++;
+				--;
+
+			#::
+			#:assign:
+			
+				=
+				=>
+				
+			#::
+			#:arithmetic:
+			
+				+ - * / %
+
+			#::
+			#:arithmetic assign:
+			
+				+= -= *= /= %=
+
+			#::
+			#:bitwise:
+			
+				& | ^ << >>
+
+			#::
+			#:bitwise assign:
+			
+				&= |= ^= <<= >>=
+
+			#::
+			#:comparison:
+
+				>= <=
+				>  <
+
+				=== ==
+				!== != !
+
+				<>
+
+				??
+				
+				|| &&
+
+			#::
+			#:ternary:
+			
+				? :
+				?:
+
+			#::
+			#:other:
+
+				;
+				,
+
+			#::
+		#::
+		#:variables:
+			#:default:
+				#:var:
+					#:default:
+	
+						$test;
+		
+						$this->test;
+
+						Test::$test;
+
+						Ns\Test::$test;
+	
+					#::
+					#:overload:
+
+						$test->sub->sub;
+		
+						$test()->sub[0]->sub;
+						$test[0]->sub()->sub;
+
+					#::
+				#::
+				#:alias:
+					#:default:
+	
+						$$test;
+		
+						$this->$test;
+
+						Test::$$test;
+
+						Ns\Test::$$test;
+	
+					#::
+					#:overload:
+		
+						$$test->sub->sub;
+						$test->$sub->sub;
+						$test->sub->$sub;
+		
+						$$test()->sub[0]->sub;
+						$test()->$sub[0]->sub;
+						$test()->sub[0]->$sub;
+	
+						$$test[0]->sub()->sub;
+						$test[0]->$sub()->sub;
+						$test[0]->sub()->$sub;
+
+						Test::$$test->sub->sub;
+						Test::$test->$sub->sub;
+						Test::$test->sub->$sub;
+
+						Ns\Test::$$test->sub->sub;
+						Ns\Test::$test->$sub->sub;
+						Ns\Test::$test->sub->$sub;
+		
+					#::
+				#::
+				#:ref:
+					#:default:
+	
+						=& $test;
+						= &$test;
+						= & $test;
+	
+						=>& $test;
+						=> &$test;
+						=> & $test;
+
+						= & $test->test;
+						= & $this->test;
+						= & Test::$test->sub;
+						= & Ns\Test::$test->sub;
+
+						=> & $test->test;
+						=> & $this->test;
+						=> & Test::$test->sub;
+						=> & Ns\Test::$test->sub;
+
+						$a = &$b;
+						$a   &$b;
+	
+					#::
+					#:overload:
+		
+						= &$test->sub->sub;
+	
+						=> &$test->sub->sub;
+		
+						= &$test()->sub[0]->sub;
+						= &$test[0]->sub()->sub;
+	
+						=> &$test()->sub[0]->sub;
+						=> &$test[0]->sub()->sub;
+
+						= & Test::$test->sub;
+						= & Ns\Test::$test->sub;
+
+						=> & Test::$test->sub;
+						=> & Ns\Test::$test->sub;
+
+					#::
+				#::
+			#::
+			#:locked/private:
+				#:var:
+					#:default:
+	
+						$_test;
+		
+						$this->_test;
+
+						Test::$_test;
+
+						Ns\Test::$_test;
+	
+					#::
+					#:overload:
+		
+						$_test->sub->sub;
+						$test->_sub->sub;
+						$test->sub->_sub;
+		
+						$_test()->sub[0]->sub;
+						$test()->_sub[0]->sub;
+						$test()->sub[0]->_sub;
+	
+						$_test[0]->sub()->sub;
+						$test[0]->_sub()->sub;
+						$test[0]->sub()->_sub;
+		
+					#::
+				#::
+				#:alias:
+					#:default:
+	
+						$$_test;
+	
+					#::
+					#:overload:
+		
+						$$_test->sub->sub;
+						$test->$_sub->sub;
+						$test->sub->$_sub;
+		
+						$$_test()->sub[0]->sub;
+						$test()->$_sub[0]->sub;
+						$test()->sub[0]->$_sub;
+	
+						$$_test[0]->sub()->sub;
+						$test[0]->$_sub()->sub;
+						$test[0]->sub()->$_sub;
+
+						Test::$$_test->sub->sub;
+						Test::$test->$_sub->sub;
+						Test::$test->sub->$_sub;
+
+						Ns\Test::$$_test->sub->sub;
+						Ns\Test::$test->$_sub->sub;
+						Ns\Test::$test->sub->$_sub;
+		
+					#::
+				#::
+			#::
+			#:local:
+				#:var:
+					#:default:
+	
+						$__test;
+	
+					#::
+					#:overload:
+		
+						$__test->sub->sub;
+						$test->__sub->sub; // it's a local var: subs will not be highlighted
+						$test->sub->__sub;
+		
+						$__test()->sub[0]->sub;
+						$test()->__sub[0]->sub;
+						$test()->sub[0]->__sub;
+	
+						$__test[0]->sub()->sub;
+						$test[0]->__sub()->sub;
+						$test[0]->sub()->__sub;
+		
+					#::
+				#::
+				#:alias:
+					#:default:
+	
+						$$__test;
+	
+					#::
+					#:overload:
+		
+						$$__test->sub->sub;
+						$test->$__sub->sub;
+						$test->sub->$__sub;
+		
+						$$__test()->sub[0]->sub;
+						$test()->$__sub[0]->sub;
+						$test()->sub[0]->$__sub;
+	
+						$$__test[0]->sub()->sub;
+						$test[0]->$__sub()->sub;
+						$test[0]->sub()->$__sub;
+
+						Test::$$__test->sub->sub;
+						Test::$test->$__sub->sub;
+						Test::$test->sub->$__sub;
+
+						Ns\Test::$$__test->sub->sub;
+						Ns\Test::$test->$__sub->sub;
+						Ns\Test::$test->sub->$__sub;
+		
+					#::
+				#::
+			#::
+		#::
+		#:strings:
+			#:single quote:
+				#:default:
+				
+					'default'
+					
+				#::
+				#:variables:
+				
+					'Hi $name!'
+					
+					'Hi $user->name!'
+					
+					'Hi $user->_name!'
+					'Hi $user->$_name!'
+					
+					'Hi $user->__name!'
+					'Hi $user->$__name!'
+					
+				#::
+				#:numbers:
+				
+					'5 + 4 = 0b1001!'
+					'3 * 7 = 0b10101!'
+
+					'5 + 5 = 0xA!'
+					'3 * 7 = 0x15!'
+					
+				#::
+				#:patterns:
+				
+					'Hi {:name}!'
+					
+				#::
+				#:regex:
+				
+					'#fo(o)?#i'
+					'#fo(o)?#ix'
+					
+				#::
+				#:nowdoc:
+				
+					<<<'test'
+					hello $bob {:test} 0 0x00 0x000000 bla
+					test;
+test;
+				
+				#::
+			#::
+			#:double quote:
+				#:default:
+				
+					"default"
+					
+				#::
+				#:variables:
+				
+					"Hi $name!"
+					
+					"Hi $user->name!"
+					
+					"Hi $user->_name!"
+					"Hi $user->$_name!"
+					
+					"Hi $user->__name!"
+					"Hi $user->$__name!"
+					
+				#::
+				#:numbers:
+				
+					"5 + 4 = 0b1001!"
+					"3 * 7 = 0b10101!"
+
+					"5 + 5 = 0xA!"
+					"3 * 7 = 0x15!"
+					
+				#::
+				#:patterns:
+				
+					"Hi {:name}!"
+					
+				#::
+				#:escaped:
+				
+					"Chars \n, \r, \t, \v, \e, \f, \\, \$, \", \400, \x0F, \u00FF"
+					
+				#::
+				#:heredoc:
+				
+					<<<test
+					hello $bob {:test} 0 0x00 0x000000 bla
+					test;
+test;
+				
+				#::
+			#::
+			#:exec:
+				#:default:
+				
+					`default`
+					
+				#::
+				#:variables:
+				
+					`Hi $name!`
+					
+					`Hi $user->name!`
+					
+					`Hi $user->_name!`
+					`Hi $user->$_name!`
+					
+					`Hi $user->__name!`
+					`Hi $user->$__name!`
+					
+				#::
+				#:numbers:
+				
+					`5 + 4 = 0b1001!`
+					`3 * 7 = 0b10101!`
+
+					`5 + 5 = 0xA!`
+					`3 * 7 = 0x15!`
+					
+				#::
+				#:patterns:
+				
+					`Hi {:name}!`
+					
+				#::
+				#:escaped:
+				
+					`Chars \n, \r, \t, \v, \e, \f, \\, \$, \", \400, \x0F, \u00FF`
+					
+				#::
+			#::
+		#::
+		#:numbers:
+			#:dec:
+				0
+				1 2 3 4 5 6 7 8 9
+				10 20 30 40 50 60 70 80 90
+				100 200 300 400 500 600 700 800 900
+
+				-0
+				-1 -2 -3 -4 -5 -6 -7 -8 -9
+				-10 -20 -30 -40 -50 -60 -70 -80 -90
+				-100 -200 -300 -400 -500 -600 -700 -800 -900
+
+				+0
+				+1 +2 +3 +4 +5 +6 +7 +8 +9
+				+10 +20 +30 +40 +50 +60 +70 +80 +90
+				+100 +200 +300 +400 +500 +600 +700 +800 +900
+
+				0.5
+				1.5 2.5 3.5 4.5 5.5 6.5 7.5 8.5 9
+				10.5 20.5 30.5 40.5 50.5 60.5 70.5 80.5 90
+				100.5 200.5 300.5 400.5 500.5 600.5 700.5 800.5 900
+
+				-0.5
+				-1.5 -2.5 -3.5 -4.5 -5.5 -6.5 -7.5 -8.5 -9
+				-10.5 -20.5 -30.5 -40.5 -50.5 -60.5 -70.5 -80.5 -90
+				-100.5 -200.5 -300.5 -400.5 -500.5 -600.5 -700.5 -800.5 -900
+
+				+0.5
+				+1.5 +2.5 +3.5 +4.5 +5.5 +6.5 +7.5 +8.5 +9
+				+10.5 +20.5 +30.5 +40.5 +50.5 +60.5 +70.5 +80.5 +90
+				+100.5 +200.5 +300.5 +400.5 +500.5 +600.5 +700.5 +800.5 +900
+
+				0.5E-5
+				1.5E-5 2.5E-5 3.5E-5 4.5E-5 5.5E-5 6.5E-5 7.5E-5 8.5E-5 9.5E-5
+				10.5E-5 20.5E-5 30.5E-5 40.5E-5 50.5E-5 60.5E-5 70.5E-5 80.5E-5 90.5E-5
+				100.5E-5 200.5E-5 300.5E-5 400.5E-5 500.5E-5 600.5E-5 700.5E-5 800.5E-5 900.5E-5
+
+				-0.5E-5
+				-1.5E-5 -2.5E-5 -3.5E-5 -4.5E-5 -5.5E-5 -6.5E-5 -7.5E-5 -8.5E-5 -9.5E-5
+				-10.5E-5 -20.5E-5 -30.5E-5 -40.5E-5 -50.5E-5 -60.5E-5 -70.5E-5 -80.5E-5 -90.5E-5
+				-100.5E-5 -200.5E-5 -300.5E-5 -400.5E-5 -500.5E-5 -600.5E-5 -700.5E-5 -800.5E-5 -900.5E-5
+
+				+0.5E-5
+				+1.5E-5 +2.5E-5 +3.5E-5 +4.5E-5 +5.5E-5 +6.5E-5 +7.5E-5 +8.5E-5 +9.5E-5
+				+10.5E-5 +20.5E-5 +30.5E-5 +40.5E-5 +50.5E-5 +60.5E-5 +70.5E-5 +80.5E-5 +90.5E-5
+				+100.5E-5 +200.5E-5 +300.5E-5 +400.5E-5 +500.5E-5 +600.5E-5 +700.5E-5 +800.5E-5 +900.5E-5
+
+				0.5E+5
+				1.5E+5 2.5E+5 3.5E+5 4.5E+5 5.5E+5 6.5E+5 7.5E+5 8.5E+5 9.5E+5
+				10.5E+5 20.5E+5 30.5E+5 40.5E+5 50.5E+5 60.5E+5 70.5E+5 80.5E+5 90.5E+5
+				100.5E+5 200.5E+5 300.5E+5 400.5E+5 500.5E+5 600.5E+5 700.5E+5 800.5E+5 900.5E+5
+
+				-0.5E+5
+				-1.5E+5 -2.5E+5 -3.5E+5 -4.5E+5 -5.5E+5 -6.5E+5 -7.5E+5 -8.5E+5 -9.5E+5
+				-10.5E+5 -20.5E+5 -30.5E+5 -40.5E+5 -50.5E+5 -60.5E+5 -70.5E+5 -80.5E+5 -90.5E+5
+				-100.5E+5 -200.5E+5 -300.5E+5 -400.5E+5 -500.5E+5 -600.5E+5 -700.5E+5 -800.5E+5 -900.5E+5
+
+				+0.5E+5
+				+1.5E+5 +2.5E+5 +3.5E+5 +4.5E+5 +5.5E+5 +6.5E+5 +7.5E+5 +8.5E+5 +9.5E+5
+				+10.5E+5 +20.5E+5 +30.5E+5 +40.5E+5 +50.5E+5 +60.5E+5 +70.5E+5 +80.5E+5 +90.5E+5
+				+100.5E+5 +200.5E+5 +300.5E+5 +400.5E+5 +500.5E+5 +600.5E+5 +700.5E+5 +800.5E+5 +900.5E+5
+
+				0.5E-5.5
+				1.5E-5.5 2.5E-5.5 3.5E-5.5 4.5E-5.5 5.5E-5.5 6.5E-5.5 7.5E-5.5 8.5E-5.5 9.5E-5.5
+				10.5E-5.5 20.5E-5.5 30.5E-5.5 40.5E-5.5 50.5E-5.5 60.5E-5.5 70.5E-5.5 80.5E-5.5 90.5E-5.5
+				100.5E-5.5 200.5E-5.5 300.5E-5.5 400.5E-5.5 500.5E-5.5 600.5E-5.5 700.5E-5.5 800.5E-5.5 900.5E-5.5
+
+				-0.5E-5.5
+				-1.5E-5.5 -2.5E-5.5 -3.5E-5.5 -4.5E-5.5 -5.5E-5.5 -6.5E-5.5 -7.5E-5.5 -8.5E-5.5 -9.5E-5.5
+				-10.5E-5.5 -20.5E-5.5 -30.5E-5.5 -40.5E-5.5 -50.5E-5.5 -60.5E-5.5 -70.5E-5.5 -80.5E-5.5 -90.5E-5.5
+				-100.5E-5.5 -200.5E-5.5 -300.5E-5.5 -400.5E-5.5 -500.5E-5.5 -600.5E-5.5 -700.5E-5.5 -800.5E-5.5 -900.5E-5.5
+
+				+0.5E-5.5
+				+1.5E-5.5 +2.5E-5.5 +3.5E-5.5 +4.5E-5.5 +5.5E-5.5 +6.5E-5.5 +7.5E-5.5 +8.5E-5.5 +9.5E-5.5
+				+10.5E-5.5 +20.5E-5.5 +30.5E-5.5 +40.5E-5.5 +50.5E-5.5 +60.5E-5.5 +70.5E-5.5 +80.5E-5.5 +90.5E-5.5
+				+100.5E-5.5 +200.5E-5.5 +300.5E-5.5 +400.5E-5.5 +500.5E-5.5 +600.5E-5.5 +700.5E-5.5 +800.5E-5.5 +900.5E-5.5
+
+				0.5E+5.5
+				1.5E+5.5 2.5E+5.5 3.5E+5.5 4.5E+5.5 5.5E+5.5 6.5E+5.5 7.5E+5.5 8.5E+5.5 9.5E+5.5
+				10.5E+5.5 20.5E+5.5 30.5E+5.5 40.5E+5.5 50.5E+5.5 60.5E+5.5 70.5E+5.5 80.5E+5.5 90.5E+5.5
+				100.5E+5.5 200.5E+5.5 300.5E+5.5 400.5E+5.5 500.5E+5.5 600.5E+5.5 700.5E+5.5 800.5E+5.5 900.5E+5.5
+
+				-0.5E+5.5
+				-1.5E+5.5 -2.5E+5.5 -3.5E+5.5 -4.5E+5.5 -5.5E+5.5 -6.5E+5.5 -7.5E+5.5 -8.5E+5.5 -9.5E+5.5
+				-10.5E+5.5 -20.5E+5.5 -30.5E+5.5 -40.5E+5.5 -50.5E+5.5 -60.5E+5.5 -70.5E+5.5 -80.5E+5.5 -90.5E+5.5
+				-100.5E+5.5 -200.5E+5.5 -300.5E+5.5 -400.5E+5.5 -500.5E+5.5 -600.5E+5.5 -700.5E+5.5 -800.5E+5.5 -900.5E+5.5
+
+				+0.5E+5.5
+				+1.5E+5.5 +2.5E+5.5 +3.5E+5.5 +4.5E+5.5 +5.5E+5.5 +6.5E+5.5 +7.5E+5.5 +8.5E+5.5 +9.5E+5.5
+				+10.5E+5.5 +20.5E+5.5 +30.5E+5.5 +40.5E+5.5 +50.5E+5.5 +60.5E+5.5 +70.5E+5.5 +80.5E+5.5 +90.5E+5.5
+				+100.5E+5.5 +200.5E+5.5 +300.5E+5.5 +400.5E+5.5 +500.5E+5.5 +600.5E+5.5 +700.5E+5.5 +800.5E+5.5 +900.5E+5.5
+
+				0E-5
+				1E-5 2E-5 3E-5 4E-5 5E-5 6E-5 7E-5 8E-5 9E-5
+				10E-5 20E-5 30E-5 40E-5 50E-5 60E-5 70E-5 80E-5 90E-5
+				100E-5 200E-5 300E-5 400E-5 500E-5 600E-5 700E-5 800E-5 900E-5
+
+				-0E-5
+				-1E-5 -2E-5 -3E-5 -4E-5 -5E-5 -6E-5 -7E-5 -8E-5 -9E-5
+				-10E-5 -20E-5 -30E-5 -40E-5 -50E-5 -60E-5 -70E-5 -80E-5 -90E-5
+				-100E-5 -200E-5 -300E-5 -400E-5 -500E-5 -600E-5 -700E-5 -800E-5 -900E-5
+
+				+0E-5
+				+1E-5 +2E-5 +3E-5 +4E-5 +5E-5 +6E-5 +7E-5 +8E-5 +9E-5
+				+10E-5 +20E-5 +30E-5 +40E-5 +50E-5 +60E-5 +70E-5 +80E-5 +90E-5
+				+100E-5 +200E-5 +300E-5 +400E-5 +500E-5 +600E-5 +700E-5 +800E-5 +900E-5
+
+				0E-5
+				1E+5 2E+5 3E+5 4E+5 5E+5 6E+5 7E+5 8E+5 9E-5
+				10E+5 20E+5 30E+5 40E+5 50E+5 60E+5 70E+5 80E+5 90E-5
+				100E+5 200E+5 300E+5 400E+5 500E+5 600E+5 700E+5 800E+5 900E-5
+
+				-0E-5
+				-1E+5 -2E+5 -3E+5 -4E+5 -5E+5 -6E+5 -7E+5 -8E+5 -9E-5
+				-10E+5 -20E+5 -30E+5 -40E+5 -50E+5 -60E+5 -70E+5 -80E+5 -90E-5
+				-100E+5 -200E+5 -300E+5 -400E+5 -500E+5 -600E+5 -700E+5 -800E+5 -900E-5
+
+				+0E-5
+				+1E+5 +2E+5 +3E+5 +4E+5 +5E+5 +6E+5 +7E+5 +8E+5 +9E-5
+				+10E+5 +20E+5 +30E+5 +40E+5 +50E+5 +60E+5 +70E+5 +80E+5 +90E-5
+				+100E+5 +200E+5 +300E+5 +400E+5 +500E+5 +600E+5 +700E+5 +800E+5 +900E-5
+			#::
+			#:oct:
+				01 02 03 04 05 06 07
+				010 020 030 040 050 060 070
+				0100 0200 0300 0400 0500 0600 0700
+
+				-01 -02 -03 -04 -05 -06 -07
+				-010 -020 -030 -040 -050 -060 -070
+				-0100 -0200 -0300 -0400 -0500 -0600 -0700
+
+				+01 +02 +03 +04 +05 +06 +07
+				+010 +020 +030 +040 +050 +060 +070
+				+0100 +0200 +0300 +0400 +0500 +0600 +0700
+
+			#::
+			#:hex:
+				#:2^n length:
+	
+					// 2^n overrides 2n
+
+					// -> switched color from integer to floating point number
+	
+					# 2
+					0x01 0x02 0x03 0x04 0x05
+					0x05 0x06 0x07 0x08 0x09
+					0x0A 0x0B 0x0C 0x0D 0x0F
+	
+					-0x01 -0x02 -0x03 -0x04 -0x05
+					-0x05 -0x06 -0x07 -0x08 -0x09
+					-0x0A -0x0B -0x0C -0x0D -0x0F
+	
+					+0x01 +0x02 +0x03 +0x04 +0x05
+					+0x05 +0x06 +0x07 +0x08 +0x09
+					+0x0A +0x0B +0x0C +0x0D +0x0F
+	
+					# 4
+					0x0001 0x0002 0x0003 0x0004 0x0005
+					0x0005 0x0006 0x0007 0x0008 0x0009
+					0x000A 0x000B 0x000C 0x000D 0x000F
+	
+					-0x0001 -0x0002 -0x0003 -0x0004 -0x0005
+					-0x0005 -0x0006 -0x0007 -0x0008 -0x0009
+					-0x000A -0x000B -0x000C -0x000D -0x000F
+	
+					+0x0001 +0x0002 +0x0003 +0x0004 +0x0005
+					+0x0005 +0x0006 +0x0007 +0x0008 +0x0009
+					+0x000A +0x000B +0x000C +0x000D +0x000F
+	
+					# 8, 16 ... 64
+	
+					0x0000000000000000000000000000000000000000000000000000000000000000
+					-0x0000000000000000000000000000000000000000000000000000000000000000
+					+0x0000000000000000000000000000000000000000000000000000000000000000
+
+				#::
+				#:2n length:
+
+					# !2^n ... 64
+	
+					# 6
+					0x000001 0x000002 0x000003 0x000004 0x000005
+					0x000005 0x000006 0x000007 0x000008 0x000009
+					0x00000A 0x00000B 0x00000C 0x00000D 0x00000F
+	
+					-0x000001 -0x000002 -0x000003 -0x000004 -0x000005
+					-0x000005 -0x000006 -0x000007 -0x000008 -0x000009
+					-0x00000A -0x00000B -0x00000C -0x00000D -0x00000F
+	
+					+0x000001 +0x000002 +0x000003 +0x000004 +0x000005
+					+0x000005 +0x000006 +0x000007 +0x000008 +0x000009
+					+0x00000A +0x00000B +0x00000C +0x00000D +0x00000F
+	
+					# 10
+					0x0000000001 0x0000000002 0x0000000003 0x0000000004 0x0000000005
+					0x0000000005 0x0000000006 0x0000000007 0x0000000008 0x0000000009
+					0x000000000A 0x000000000B 0x000000000C 0x000000000D 0x000000000F
+	
+					-0x0000000001 -0x0000000002 -0x0000000003 -0x0000000004 -0x0000000005
+					-0x0000000005 -0x0000000006 -0x0000000007 -0x0000000008 -0x0000000009
+					-0x000000000A -0x000000000B -0x000000000C -0x000000000D -0x000000000F
+	
+					+0x0000000001 +0x0000000002 +0x0000000003 +0x0000000004 +0x0000000005
+					+0x0000000005 +0x0000000006 +0x0000000007 +0x0000000008 +0x0000000009
+					+0x000000000A +0x000000000B +0x000000000C +0x000000000D +0x000000000F
+	
+					# 12, 14, 18, 20 ... 66 -> 2n -> infinite
+
+				#::
+				#:2n-1 length:
+				
+					# 1
+					0x1 0x2 0x3 0x4 0x5
+					0x5 0x6 0x7 0x8 0x9
+					0xA 0xB 0xC 0xD 0xF
+					
+					-0x1 -0x2 -0x3 -0x4 -0x5
+					-0x5 -0x6 -0x7 -0x8 -0x9
+					-0xA -0xB -0xC -0xD -0xF
+					
+					+0x1 +0x2 +0x3 +0x4 +0x5
+					+0x5 +0x6 +0x7 +0x8 +0x9
+					+0xA +0xB +0xC +0xD +0xF
+					
+					# 3
+					0x001 0x002 0x003 0x004 0x005
+					0x005 0x006 0x007 0x008 0x009
+					0x00A 0x00B 0x00C 0x00D 0x00F
+					
+					-0x001 -0x002 -0x003 -0x004 -0x005
+					-0x005 -0x006 -0x007 -0x008 -0x009
+					-0x00A -0x00B -0x00C -0x00D -0x00F
+					
+					+0x001 +0x002 +0x003 +0x004 +0x005
+					+0x005 +0x006 +0x007 +0x008 +0x009
+					+0x00A +0x00B +0x00C +0x00D +0x00F
+					
+					# ... infinite
+					
+				#::
+			#::
+			#:bin:
+				#:2^n length:
+				
+					// 2^n overrides 2n
+
+					// -> switched color from integer to floating point number
+					
+					# 2
+					0b00 0b01
+					-0b00 -0b01
+					+0b00 +0b01
+					
+					# 4
+					0b0000 0b0001
+					-0b0000 -0b0001
+					+0b0000 +0b0001
+					
+					# 8, 16 ... 64
+					
+					0b0000000000000000000000000000000000000000000000000000000000000000
+					-0b0000000000000000000000000000000000000000000000000000000000000000
+					+0b0000000000000000000000000000000000000000000000000000000000000000
+					
+				#::
+				#:2n length:
+				
+					# !2^n ... 64
+					
+					# 6
+					0b000000 0b000001
+					-0b000000 -0b000001
+					+0b000000 +0b000001
+					
+					# 10
+					0b0000000000 0b0000000001
+					-0b0000000000 -0b0000000001
+					+0b0000000000 +0b0000000001
+					
+					# 12, 14, 18, 20 ... 66 -> 2n -> infinite
+					
+				#::
+				#:2n-1 length:
+				
+					# 1
+					0b0 0b1
+					-0b0 -0b1
+					+0b0 +0b1
+					
+					# 3
+					0b000 0b001
+					-0b000 -0b001
+					+0b000 +0b001
+					
+					# ... infinite
+					
+				#::
+			#::
+		#::
+		#:keywords:
+			#:k0:
+
+				echo
+
+				exit
+
+				die
+
+				print
+
+				var_dump
+
+			#::
+			#:k1:
+
+				(array); (bool); (float); (int); (object); (string);
+
+			#::
+			#:k2:
+
+				// deprecated
+				(unset);
+
+			#::
+			#:k3:
+	
+				// highlight enabled for global context
+				true; false; null;
+
+				// highlight disabled in context
+				const true	= true;
+				const false	= false;
+				const null	= null;
+
+				function true(){}
+				function false(){}
+				function null(){}
+
+			#::
+			#:k4:
+			
+				// I use them for "static classes". 
+				// php.net says you should not use the prefix __ in userland. I like to be an anarchist.
+
+				// To delete this block, go to main.k4
+
+				// highlight enabled for global context
+				__attr_Foo; __bit_Foo; __byte_Foo; __chr_Foo; __class_Foo; __const_Foo; __dbl_Foo;
+				__dir_Foo; __entity_Foo; __file_Foo; __flag_Foo; __ini_Foo; __int_Foo; __interface_Foo;
+				__str_Foo; __tpl_Foo; __tuple_Foo; __trait_Foo; __type_Foo; __value_Foo; __yaml_Foo;
+
+				// highlight disabled in context
+				class __str_Foo{}
+				const __str_Foo = '';
+				function __str_Foo(){}
+				interface __str_Foo{}
+				trait __str_Foo{}
+
+			#::
+			#:k5:
+
+				// highlight disabled for global context
+				__call; __callstatic; __clone; __construct; __debuginfo; __destruct; __get;
+				__invoke; __isset; __set; __set_state; __sleep; __tostring; __unset; __wake_up;
+
+				// highlight enabled for context
+				function __call(){}
+				function __callStatic(){}
+				function __clone(){}
+				function __construct(){}
+				function __debugInfo(){}
+				function __destruct(){}
+				function __get(){}
+				function __invoke(){}
+				function __isset(){}
+				function __set(){}
+				function __set_state(){}
+				function __sleep(){}
+				function __toString(){}
+				function __unset(){}
+				function __wakeup(){}
+
+			#::
+			#:k6:
+
+				__COMPILER_HALT_OFFSET__;
+				__halt_compiler;
+
+			#::
+			#:k7:
+
+				// highlight enabled for global context
+				private protected static
+
+				// highlight disabled in context
+				const private = '';
+				const protected = '';
+				const static = '';
+
+				function private(){}
+				function protected(){}
+				function static(){}
+
+			#::
+			#:k8:
+
+				// highlight enabled for global context
+				new self new static throw new throw new class
+
+			#::
+			#:k9:
+
+				// highlight enabled for global context
+				catch final finally new public return throw try new class
+
+				// highlight disabled in context
+				const catch = '';
+				const final = '';
+				const finally = '';
+				const new = '';
+				const public = '';
+				const return = '';
+				const throw = '';
+				const try = '';
+
+				function catch(){}
+				function final(){}
+				function finally(){}
+				function new(){}
+				function public(){}
+				function return(){}
+				function throw(){}
+				function try(){}
+
+			#::
+			#:k10:
+
+				// parse function signature
+				function k10(string $name = "test", vector<a, b> $pos, array &$list = [], int $i = 0x00)
+				function baz(?bool $a)
+				function baz(string $a)
+				function bar<T>(array<T> $a)
+				function(string $a)
+				function(array $a = [])
+				function(HashTable<int, Bucket<key, value>> $HashTable, int $hash)
+				function(a<b, c>|d<e, f> $name)
+
+				function baz<T>(?bool $a)
+				function baz<T>(string $a)
+				function bar<T>(array<T> $a)
+				function<T>(string $a)
+				function<T>(array $a = [])
+				function<T>(HashTable<int, Bucket<key, value>> $HashTable, int $hash)
+				function<T>(a<b, c>|d<e, f> $name)
+
+
+				//~~ issue #1: {:pattern} and /regex/ not highlighted in strings
+				function(string $name = 'test {:pattern}')
+				function(string $name = '#foo?#i')
+
+
+				//~~ issue #2: matches until first ")" results in termination
+				// 1 array()
+				function(array $a = array(), int $bar)
+
+				// 2 regex
+				function(string $name = '#fo(?:r|o)#i')
+
+				// 3 fuzzy
+				function($c = "xsx((())))cdcd{:test}dcdc $bar {}")
+				// fix "
+
+			#::
+			#:k11:
+
+				// highlight enabled for global context
+				array bool callable float int iterable mixed self string void
+				My\Foo
+
+				// highlight enabled in context
+				function() : array {}
+				function() : bool {}
+				function() : callable {}
+				function() : float {}
+				function() : int {}
+				function() : iterable {}
+				function() : mixed {}
+				function() : self {}
+				function() : string {}
+				function() : void {}
+
+				function() : My\Foo {}
+
+				// parse return type
+				function concat(): array {}
+				function concat(): array<T> {}
+				function concat(): array<T>|My\Foo<a, b> {}
+				function concat(): ?array {}
+				function concat(): ?array<T> {}
+				function concat<T>(array<T> $a, array<T> $b): array<T> {}
+				
+			#::
+			#:k12:
+
+				// highlight enabled for global context
+				__PHP_Incomplete_Class; Iterable;
+
+				// highlight disabled for context
+				as __PHP_Incomplete_Class;
+				as Iterable;
+
+				class __PHP_Incomplete_Class{}
+				class Iterable{}
+
+				interface __PHP_Incomplete_Class{}
+				interface Iterable{}
+
+				new __PHP_Incomplete_Class;
+				new Iterable;
+
+				throw new __PHP_Incomplete_Class;
+				throw new Iterable;
+
+				trait __PHP_Incomplete_Class{}
+				trait Iterable{}
+			#::
+			#:k13:
+				// highlight enabled for global context
+				array; callable; self;
+				
+				// highlight error in context
+				namespace array;
+				namespace callable;
+				namespace self;
+
+				// 7.1.5: bool, float, int, iterable, mixed, numeric, object,
+				//	resource, string, and void not listed here. You should avoid them.
+			#::
+			#:k14:
+				// highlight enabled for global context
+				array bool callable float int iterable string self void
+				
+				// highlight error in context
+				class array{}
+				class bool{}
+				class callable{}
+				class float{}
+				class int{}
+				class iterable{}
+				class string{}
+				class self{}
+				class void{}
+
+				// 7.1.5: mixed, numeric, object, and resource are valid and
+				//	not listed here. You should avoid them.
+			#::
+			#:k15:
+
+				// highlight enabled for global context
+				class;
+
+				// highlight error in context
+				const class = '';
+
+			#::
+			#:k16:
+
+				// highlight enabled for global context
+				__PHP_Incomplete_Class; Iterable;
+
+			#::
+			#:k17:
+
+				// highlight enabled for global context
+				class;
+
+				// highlight disabled in context
+				function class(){}
+
+			#::
+			#:k18:
+
+				// highlight enabled for global context
+				abstract; and; as; break; case; clone; const; continue; default; do; echo; else; exit;
+				extends; function; global; goto; implements; include; include_once; instanceOf; insteadOf; interface;
+				namespace; or; parent; print; require; require_once; trait; use; var; yield; xor;
+
+				// highlight disabled in context
+				const abstract = '';
+				const and = '';
+				const as = '';
+				const break = '';
+				const case = '';
+				const clone = '';
+				const const = '';
+				const continue = '';
+				const default = '';
+				const do = '';
+				const echo = '';
+				const else = '';
+				const exit = '';
+				const extends = '';
+				const function = '';
+				const global = '';
+				const goto = '';
+				const implements = '';
+				const include = '';
+				const include_once = '';
+				const instanceof = '';
+				const insteadof = '';
+				const interface = '';
+				const namespace = '';
+				const or = '';
+				const parent = '';
+				const print = '';
+				const require = '';
+				const require_once = '';
+				const trait = '';
+				const use = '';
+				const var = '';
+				const yield = '';
+				const xor = '';
+
+				function abstract(){}
+				function and(){}
+				function as(){}
+				function break(){}
+				function case(){}
+				function clone(){}
+				function const(){}
+				function continue(){}
+				function default(){}
+				function do(){}
+				function echo(){}
+				function else(){}
+				function exit(){}
+				function extends(){}
+				function function(){}
+				function global(){}
+				function goto(){}
+				function implements(){}
+				function include(){}
+				function include_once(){}
+				function instanceof(){}
+				function insteadof(){}
+				function interface(){}
+				function namespace(){}
+				function or(){}
+				function parent(){}
+				function print(){}
+				function require(){}
+				function require_once(){}
+				function trait(){}
+				function use(){}
+				function var(){}
+				function yield(){}
+				function xor(){}
+
+			#::
+			#:k19:
+
+				// highlight enabled for global context
+				array(); declare(); define(); elseif(); empty(); eval(); for(); foreach(); function();
+				if(); isset(); list(); switch(); unset(); while();
+
+				// highlight disabled in context
+				const array = '';
+				const declare = '';
+				const define = '';
+				const die = '';
+				const elseif = '';
+				const empty = '';
+				const eval = '';
+				const for = '';
+				const foreach = '';
+				const function = '';
+				const if = '';
+				const isset = '';
+				const list = '';
+				const switch = '';
+				const unset = '';
+				const while = '';
+
+				function array(){}
+				function declare(){}
+				function define(){}
+				function die(){}
+				function elseif(){}
+				function empty(){}
+				function eval(){}
+				function for(){}
+				function foreach(){}
+				function function(){}
+				function if(){}
+				function isset(){}
+				function list(){}
+				function switch(){}
+				function unset(){}
+				function while(){}
+			#::
+			#:k20:
+
+				// highlight enabled for global context
+				array; bool; callable; float; int; iterable; mixed; numeric; object; resource; self; string; void;
+
+				// highlight disabled in context
+				const array = '';
+				const bool = '';
+				const callable = '';
+				const float = '';
+				const int = '';
+				const iterable = '';
+				const mixed = '';
+				const numeric = '';
+				const object = '';
+				const resource = '';
+				const self = '';
+				const string = '';
+				const void = '';
+
+				function(array $array = '', array $array = array())
+
+				function array(){}
+				function bool(){}
+				function callable(){}
+				function float(){}
+				function int(){}
+				function iterable(){}
+				function mixed(){}
+				function numeric(){}
+				function object(){}
+				function resource(){}
+				function self(){}
+				function string(){}
+				function void(){}
+
+				#~ issue #01: enabling k32 should highlight the type hint but will create side effects in other contexts
+				public const array array = [];
+				public const array[] array = [];
+				public const array<t> array = [];
+				public const aaa array = [];
+
+				public array $array = [];
+				public array[] $array = [];
+				public array<t> $array = [];
+				public aaa $array = [];
+
+			#::
+			#:k21:
+				
+				// highlight enabled for global context
+				__CLASS__; __DIR__; __FILE__; __FUNCTION__; __LINE__; __METHOD__; __NAMESPACE__; __TRAIT__;
+
+				// highlight disabled in context
+				const __CLASS__ = '';
+				const __DIR__ = '';
+				const __FILE__ = '';
+				const __FUNCTION__ = '';
+				const __LINE__ = '';
+				const __METHOD__ = '';
+				const __NAMESPACE__ = '';
+				const __TRAIT__ = '';
+
+				function __CLASS__(){}
+				function __DIR__(){}
+				function __FILE__(){}
+				function __FUNCTION__(){}
+				function __LINE__(){}
+				function __METHOD__(){}
+				function __NAMESPACE__(){}
+				function __TRAIT__(){}
+
+			#::
+			#:k22:
+
+				// highlight enabled for global context
+				class
+				
+				// highlight enabled for context
+				My\Foo::class
+
+			#::
+			#:k23:
+
+				// highlight enabled for global context
+				E_ALL; E_DEPRECATED; E_ERROR; E_NOTICE; E_PARSE; E_STRICT; E_WARNING;
+				E_CORE_ERROR; E_CORE_WARNING; E_COMPILE_ERROR; E_COMPILE_WARNING;
+				E_USER_ERROR; E_USER_DEPRECATED; E_USER_NOTICE; E_USER_WARNING;
+
+				// highlight disabled for context
+				class E_ALL{}
+				class E_DEPRECATED{}
+				class E_ERROR{}
+				class E_NOTICE{}
+				class E_PARSE{}
+				class E_STRICT{}
+				class E_WARNING{}
+				class E_CORE_ERROR{}
+				class E_CORE_WARNING{}
+				class E_COMPILE_ERROR{}
+				class E_COMPILE_WARNING{}
+				class E_USER_ERROR{}
+				class E_USER_DEPRECATED{}
+				class E_USER_NOTICE{}
+				class E_USER_WARNING{}
+
+				const E_ALL = '';
+				const E_DEPRECATED = '';
+				const E_ERROR = '';
+				const E_NOTICE = '';
+				const E_PARSE = '';
+				const E_STRICT = '';
+				const E_WARNING = '';
+				const E_CORE_ERROR = '';
+				const E_CORE_WARNING = '';
+				const E_COMPILE_ERROR = '';
+				const E_COMPILE_WARNING = '';
+				const E_USER_ERROR = '';
+				const E_USER_DEPRECATED = '';
+				const E_USER_NOTICE = '';
+				const E_USER_WARNING = '';
+
+				function E_ALL(){}
+				function E_DEPRECATED(){}
+				function E_ERROR(){}
+				function E_NOTICE(){}
+				function E_PARSE(){}
+				function E_STRICT(){}
+				function E_WARNING(){}
+				function E_CORE_ERROR(){}
+				function E_CORE_WARNING(){}
+				function E_COMPILE_ERROR(){}
+				function E_COMPILE_WARNING(){}
+				function E_USER_ERROR(){}
+				function E_USER_DEPRECATED(){}
+				function E_USER_NOTICE(){}
+				function E_USER_WARNING(){}
+
+				interface E_ALL{}
+				interface E_DEPRECATED{}
+				interface E_ERROR{}
+				interface E_NOTICE{}
+				interface E_PARSE{}
+				interface E_STRICT{}
+				interface E_WARNING{}
+				interface E_CORE_ERROR{}
+				interface E_CORE_WARNING{}
+				interface E_COMPILE_ERROR{}
+				interface E_COMPILE_WARNING{}
+				interface E_USER_ERROR{}
+				interface E_USER_DEPRECATED{}
+				interface E_USER_NOTICE{}
+				interface E_USER_WARNING{}
+
+				new E_ALL;
+				new E_DEPRECATED;
+				new E_ERROR;
+				new E_NOTICE;
+				new E_PARSE;
+				new E_STRICT;
+				new E_WARNING;
+				new E_CORE_ERROR;
+				new E_CORE_WARNING;
+				new E_COMPILE_ERROR;
+				new E_COMPILE_WARNING;
+				new E_USER_ERROR;
+				new E_USER_DEPRECATED;
+				new E_USER_NOTICE;
+				new E_USER_WARNING;
+
+				Ns\E_ALL;
+				Ns\E_DEPRECATED;
+				Ns\E_ERROR;
+				Ns\E_NOTICE;
+				Ns\E_PARSE;
+				Ns\E_STRICT;
+				Ns\E_WARNING;
+				Ns\E_CORE_ERROR;
+				Ns\E_CORE_WARNING;
+				Ns\E_COMPILE_ERROR;
+				Ns\E_COMPILE_WARNING;
+				Ns\E_USER_ERROR;
+				Ns\E_USER_DEPRECATED;
+				Ns\E_USER_NOTICE;
+				Ns\E_USER_WARNING;
+				
+				throw new E_ALL;
+				throw new E_DEPRECATED;
+				throw new E_ERROR;
+				throw new E_NOTICE;
+				throw new E_PARSE;
+				throw new E_STRICT;
+				throw new E_WARNING;
+				throw new E_CORE_ERROR;
+				throw new E_CORE_WARNING;
+				throw new E_COMPILE_ERROR;
+				throw new E_COMPILE_WARNING;
+				throw new E_USER_ERROR;
+				throw new E_USER_DEPRECATED;
+				throw new E_USER_NOTICE;
+				throw new E_USER_WARNING;
+
+				trait E_ALL{}
+				trait E_DEPRECATED{}
+				trait E_ERROR{}
+				trait E_NOTICE{}
+				trait E_PARSE{}
+				trait E_STRICT{}
+				trait E_WARNING{}
+				trait E_CORE_ERROR{}
+				trait E_CORE_WARNING{}
+				trait E_COMPILE_ERROR{}
+				trait E_COMPILE_WARNING{}
+				trait E_USER_ERROR{}
+				trait E_USER_DEPRECATED{}
+				trait E_USER_NOTICE{}
+				trait E_USER_WARNING{}
+
+			#::
+			#:k24:
+
+				// highlight enabled for global context
+				DEFAULT_INCLUDE_PATH; PHP_BINARY; PHP_CONFIG_FILE_PATH; PHP_EXTENSION_DIR;
+				PHP_BINDIR; PHP_BINDDIR; PHP_MANDIR; PHP_LIBDIR; PHP_DATADIR; PHP_SYSCONFDIR;
+				PHP_LOCALSTATEDIR; PHP_CONFIG_FILE_SCAN_DIR; PHP_EOL; PHP_INT_MAX; PHP_INT_MIN;
+				PHP_INT_SIZE; PHP_MAJOR_VERSION; PHP_MINOR_VERSION; PHP_RELEASE_VERSION;
+				PHP_EXTRA_VERSION; PHP_MAXPATHLEN; PHP_OS; PHP_PREFIX; PHP_SHLIB_SUFFIX; PHP_SAPI;
+				PHP_VERSION_ID; PHP_ZTS; PEAR_INSTALL_DIR; PEAR_EXTENSION_DIR;
+
+				// highlight disabled for context
+				class DEFAULT_INCLUDE_PATH{}
+				class PHP_BINARY{}
+				class PHP_CONFIG_FILE_PATH{}
+				class PHP_EXTENSION_DIR{}
+				class PHP_BINDIR{}
+				class PHP_BINDDIR{}
+				class PHP_MANDIR{}
+				class PHP_LIBDIR{}
+				class PHP_DATADIR{}
+				class PHP_SYSCONFDIR{}
+				class PHP_LOCALSTATEDIR{}
+				class PHP_CONFIG_FILE_SCAN_DIR{}
+				class PHP_EOL{}
+				class PHP_INT_MAX{}
+				class PHP_INT_MIN{}
+				class PHP_INT_SIZE{}
+				class PHP_MAJOR_VERSION{}
+				class PHP_MINOR_VERSION{}
+				class PHP_RELEASE_VERSION{}
+				class PHP_EXTRA_VERSION{}
+				class PHP_MAXPATHLEN{}
+				class PHP_OS{}
+				class PHP_PREFIX{}
+				class PHP_SHLIB_SUFFIX{}
+				class PHP_SAPI{}
+				class PHP_VERSION_ID{}
+				class PHP_ZTS{}
+				class PEAR_INSTALL_DIR{}
+				class PEAR_EXTENSION_DIR{}
+
+				const DEFAULT_INCLUDE_PATH = '';
+				const PHP_BINARY = '';
+				const PHP_CONFIG_FILE_PATH = '';
+				const PHP_EXTENSION_DIR = '';
+				const PHP_BINDIR = '';
+				const PHP_BINDDIR = '';
+				const PHP_MANDIR = '';
+				const PHP_LIBDIR = '';
+				const PHP_DATADIR = '';
+				const PHP_SYSCONFDIR = '';
+				const PHP_LOCALSTATEDIR = '';
+				const PHP_CONFIG_FILE_SCAN_DIR = '';
+				const PHP_EOL = '';
+				const PHP_INT_MAX = '';
+				const PHP_INT_MIN = '';
+				const PHP_INT_SIZE = '';
+				const PHP_MAJOR_VERSION = '';
+				const PHP_MINOR_VERSION = '';
+				const PHP_RELEASE_VERSION = '';
+				const PHP_EXTRA_VERSION = '';
+				const PHP_MAXPATHLEN = '';
+				const PHP_OS = '';
+				const PHP_PREFIX = '';
+				const PHP_SHLIB_SUFFIX = '';
+				const PHP_SAPI = '';
+				const PHP_VERSION_ID = '';
+				const PHP_ZTS = '';
+				const PEAR_INSTALL_DIR = '';
+				const PEAR_EXTENSION_DIR = '';
+
+				function DEFAULT_INCLUDE_PATH(){}
+				function PHP_BINARY(){}
+				function PHP_CONFIG_FILE_PATH(){}
+				function PHP_EXTENSION_DIR(){}
+				function PHP_BINDIR(){}
+				function PHP_BINDDIR(){}
+				function PHP_MANDIR(){}
+				function PHP_LIBDIR(){}
+				function PHP_DATADIR(){}
+				function PHP_SYSCONFDIR(){}
+				function PHP_LOCALSTATEDIR(){}
+				function PHP_CONFIG_FILE_SCAN_DIR(){}
+				function PHP_EOL(){}
+				function PHP_INT_MAX(){}
+				function PHP_INT_MIN(){}
+				function PHP_INT_SIZE(){}
+				function PHP_MAJOR_VERSION(){}
+				function PHP_MINOR_VERSION(){}
+				function PHP_RELEASE_VERSION(){}
+				function PHP_EXTRA_VERSION(){}
+				function PHP_MAXPATHLEN(){}
+				function PHP_OS(){}
+				function PHP_PREFIX(){}
+				function PHP_SHLIB_SUFFIX(){}
+				function PHP_SAPI(){}
+				function PHP_VERSION_ID(){}
+				function PHP_ZTS(){}
+				function PEAR_INSTALL_DIR(){}
+				function PEAR_EXTENSION_DIR(){}
+
+				interface DEFAULT_INCLUDE_PATH{}
+				interface PHP_BINARY{}
+				interface PHP_CONFIG_FILE_PATH{}
+				interface PHP_EXTENSION_DIR{}
+				interface PHP_BINDIR{}
+				interface PHP_BINDDIR{}
+				interface PHP_MANDIR{}
+				interface PHP_LIBDIR{}
+				interface PHP_DATADIR{}
+				interface PHP_SYSCONFDIR{}
+				interface PHP_LOCALSTATEDIR{}
+				interface PHP_CONFIG_FILE_SCAN_DIR{}
+				interface PHP_EOL{}
+				interface PHP_INT_MAX{}
+				interface PHP_INT_MIN{}
+				interface PHP_INT_SIZE{}
+				interface PHP_MAJOR_VERSION{}
+				interface PHP_MINOR_VERSION{}
+				interface PHP_RELEASE_VERSION{}
+				interface PHP_EXTRA_VERSION{}
+				interface PHP_MAXPATHLEN{}
+				interface PHP_OS{}
+				interface PHP_PREFIX{}
+				interface PHP_SHLIB_SUFFIX{}
+				interface PHP_SAPI{}
+				interface PHP_VERSION_ID{}
+				interface PHP_ZTS{}
+				interface PEAR_INSTALL_DIR{}
+				interface PEAR_EXTENSION_DIR{}
+
+				new DEFAULT_INCLUDE_PATH;
+				new PHP_BINARY;
+				new PHP_CONFIG_FILE_PATH;
+				new PHP_EXTENSION_DIR;
+				new PHP_BINDIR;
+				new PHP_BINDDIR;
+				new PHP_MANDIR;
+				new PHP_LIBDIR;
+				new PHP_DATADIR;
+				new PHP_SYSCONFDIR;
+				new PHP_LOCALSTATEDIR;
+				new PHP_CONFIG_FILE_SCAN_DIR;
+				new PHP_EOL;
+				new PHP_INT_MAX;
+				new PHP_INT_MIN;
+				new PHP_INT_SIZE;
+				new PHP_MAJOR_VERSION;
+				new PHP_MINOR_VERSION;
+				new PHP_RELEASE_VERSION;
+				new PHP_EXTRA_VERSION;
+				new PHP_MAXPATHLEN;
+				new PHP_OS;
+				new PHP_PREFIX;
+				new PHP_SHLIB_SUFFIX;
+				new PHP_SAPI;
+				new PHP_VERSION_ID;
+				new PHP_ZTS;
+				new PEAR_INSTALL_DIR;
+				new PEAR_EXTENSION_DIR;
+
+				Ns\DEFAULT_INCLUDE_PATH;
+				Ns\PHP_BINARY;
+				Ns\PHP_CONFIG_FILE_PATH;
+				Ns\PHP_EXTENSION_DIR;
+				Ns\PHP_BINDIR;
+				Ns\PHP_BINDDIR;
+				Ns\PHP_MANDIR;
+				Ns\PHP_LIBDIR;
+				Ns\PHP_DATADIR;
+				Ns\PHP_SYSCONFDIR;
+				Ns\PHP_LOCALSTATEDIR;
+				Ns\PHP_CONFIG_FILE_SCAN_DIR;
+				Ns\PHP_EOL;
+				Ns\PHP_INT_MAX;
+				Ns\PHP_INT_MIN;
+				Ns\PHP_INT_SIZE;
+				Ns\PHP_MAJOR_VERSION;
+				Ns\PHP_MINOR_VERSION;
+				Ns\PHP_RELEASE_VERSION;
+				Ns\PHP_EXTRA_VERSION;
+				Ns\PHP_MAXPATHLEN;
+				Ns\PHP_OS;
+				Ns\PHP_PREFIX;
+				Ns\PHP_SHLIB_SUFFIX;
+				Ns\PHP_SAPI;
+				Ns\PHP_VERSION_ID;
+				Ns\PHP_ZTS;
+				Ns\PEAR_INSTALL_DIR;
+				Ns\PEAR_EXTENSION_DIR;
+
+				throw new DEFAULT_INCLUDE_PATH;
+				throw new PHP_BINARY;
+				throw new PHP_CONFIG_FILE_PATH;
+				throw new PHP_EXTENSION_DIR;
+				throw new PHP_BINDIR;
+				throw new PHP_BINDDIR;
+				throw new PHP_MANDIR;
+				throw new PHP_LIBDIR;
+				throw new PHP_DATADIR;
+				throw new PHP_SYSCONFDIR;
+				throw new PHP_LOCALSTATEDIR;
+				throw new PHP_CONFIG_FILE_SCAN_DIR;
+				throw new PHP_EOL;
+				throw new PHP_INT_MAX;
+				throw new PHP_INT_MIN;
+				throw new PHP_INT_SIZE;
+				throw new PHP_MAJOR_VERSION;
+				throw new PHP_MINOR_VERSION;
+				throw new PHP_RELEASE_VERSION;
+				throw new PHP_EXTRA_VERSION;
+				throw new PHP_MAXPATHLEN;
+				throw new PHP_OS;
+				throw new PHP_PREFIX;
+				throw new PHP_SHLIB_SUFFIX;
+				throw new PHP_SAPI;
+				throw new PHP_VERSION_ID;
+				throw new PHP_ZTS;
+				throw new PEAR_INSTALL_DIR;
+				throw new PEAR_EXTENSION_DIR;
+
+				trait DEFAULT_INCLUDE_PATH{}
+				trait PHP_BINARY{}
+				trait PHP_CONFIG_FILE_PATH{}
+				trait PHP_EXTENSION_DIR{}
+				trait PHP_BINDIR{}
+				trait PHP_BINDDIR{}
+				trait PHP_MANDIR{}
+				trait PHP_LIBDIR{}
+				trait PHP_DATADIR{}
+				trait PHP_SYSCONFDIR{}
+				trait PHP_LOCALSTATEDIR{}
+				trait PHP_CONFIG_FILE_SCAN_DIR{}
+				trait PHP_EOL{}
+				trait PHP_INT_MAX{}
+				trait PHP_INT_MIN{}
+				trait PHP_INT_SIZE{}
+				trait PHP_MAJOR_VERSION{}
+				trait PHP_MINOR_VERSION{}
+				trait PHP_RELEASE_VERSION{}
+				trait PHP_EXTRA_VERSION{}
+				trait PHP_MAXPATHLEN{}
+				trait PHP_OS{}
+				trait PHP_PREFIX{}
+				trait PHP_SHLIB_SUFFIX{}
+				trait PHP_SAPI{}
+				trait PHP_VERSION_ID{}
+				trait PHP_ZTS{}
+				trait PEAR_INSTALL_DIR{}
+				trait PEAR_EXTENSION_DIR{}
+			#::
+			#:k25:
+				
+				// highlight enabled for global context
+				Closure; Generator; Php_User_Filter_Class; Throwable;
+
+				// highlight disabled for context
+				as Closure;
+				as Generator;
+				as Php_User_Filter_Class;
+				as Throwable;
+
+				class Closure{}
+				class Generator{}
+				class Php_User_Filter_Class{}
+				class Throwable{}
+
+				const Closure = '';
+				const Generator = '';
+				const Php_User_Filter_Class = '';
+				const Throwable = '';
+
+				function Closure(){}
+				function Generator(){}
+				function Php_User_Filter_Class(){}
+				function Throwable(){}
+
+				interface Closure{}
+				interface Generator{}
+				interface Php_User_Filter_Class{}
+				interface Throwable{}
+
+				new Closure;
+				new Generator;
+				new Php_User_Filter_Class;
+				new Throwable;
+
+				Ns\Closure;
+				Ns\Generator;
+				Ns\Php_User_Filter_Class;
+				Ns\Throwable;
+
+				throw new Closure;
+				throw new Generator;
+				throw new Php_User_Filter_Class;
+				throw new Throwable;
+
+				trait Closure{}
+				trait Generator{}
+				trait Php_User_Filter_Class{}
+				trait Throwable{}
+			#::
+			#:k26:
+				// highlight enabled for global context
+				SplDoublyLinkedList; SplFileInfo; SplFileObject; SplFixedArray; SplMinHeap; SplMaxHeap;
+				SplObjectStorage; SplPriorityQueue; SplQueue; SplStack; SplTempFileObject;
+				SplFoo;
+
+				// highlight disabled for context
+				class SplDoublyLinkedList{}
+				class SplFileInfo{}
+				class SplFileObject{}
+				class SplFixedArray{}
+				class SplMinHeap{}
+				class SplMaxHeap{}
+				class SplObjectStorage{}
+				class SplPriorityQueue{}
+				class SplQueue{}
+				class SplStack{}
+				class SplTempFileObject{}
+				class SplFoo{}
+
+				const SplDoublyLinkedList = '';
+				const SplFileInfo = '';
+				const SplFileObject = '';
+				const SplFixedArray = '';
+				const SplMinHeap = '';
+				const SplMaxHeap = '';
+				const SplObjectStorage = '';
+				const SplPriorityQueue = '';
+				const SplQueue = '';
+				const SplStack = '';
+				const SplTempFileObject = '';
+				const SplFoo = '';
+
+				function SplDoublyLinkedList(){}
+				function SplFileInfo(){}
+				function SplFileObject(){}
+				function SplFixedArray(){}
+				function SplMinHeap(){}
+				function SplMaxHeap(){}
+				function SplObjectStorage(){}
+				function SplPriorityQueue(){}
+				function SplQueue(){}
+				function SplStack(){}
+				function SplTempFileObject(){}
+				function SplFoo(){}
+
+				interface SplDoublyLinkedList{}
+				interface SplFileInfo{}
+				interface SplFileObject{}
+				interface SplFixedArray{}
+				interface SplMinHeap{}
+				interface SplMaxHeap{}
+				interface SplObjectStorage{}
+				interface SplPriorityQueue{}
+				interface SplQueue{}
+				interface SplStack{}
+				interface SplTempFileObject{}
+				interface SplFoo{}
+
+				new SplDoublyLinkedList;
+				new SplFileInfo;
+				new SplFileObject;
+				new SplFixedArray;
+				new SplMinHeap;
+				new SplMaxHeap;
+				new SplObjectStorage;
+				new SplPriorityQueue;
+				new SplQueue;
+				new SplStack;
+				new SplTempFileObject;
+				new SplFoo;
+
+				Ns\SplDoublyLinkedList;
+				Ns\SplFileInfo;
+				Ns\SplFileObject;
+				Ns\SplFixedArray;
+				Ns\SplMinHeap;
+				Ns\SplMaxHeap;
+				Ns\SplObjectStorage;
+				Ns\SplPriorityQueue;
+				Ns\SplQueue;
+				Ns\SplStack;
+				Ns\SplTempFileObject;
+				Ns\SplFoo;
+				
+				trait SplDoublyLinkedList{}
+				trait SplFileInfo{}
+				trait SplFileObject{}
+				trait SplFixedArray{}
+				trait SplMinHeap{}
+				trait SplMaxHeap{}
+				trait SplObjectStorage{}
+				trait SplPriorityQueue{}
+				trait SplQueue{}
+				trait SplStack{}
+				trait SplTempFileObject{}
+				trait SplFoo{}
+
+				throw new SplDoublyLinkedList;
+				throw new SplFileInfo;
+				throw new SplFileObject;
+				throw new SplFixedArray;
+				throw new SplMinHeap;
+				throw new SplMaxHeap;
+				throw new SplObjectStorage;
+				throw new SplPriorityQueue;
+				throw new SplQueue;
+				throw new SplStack;
+				throw new SplTempFileObject;
+				throw new SplFoo;
+
+			#::
+			#:k27:
+
+				// highlight enabled for global context
+				ArithmeticError; DivisionByZeroError; AssertionError; ParseError; TypeError; Error;
+				ClosedGeneratorException; DOMException; ErrorException; IntlException; LogicException; BadFunctionCallException;
+				BadMethodCallException; DomainException; InvalidArgumentException; LengthException; OutOfRangeException;
+				PharException; ReflectionException; RuntimeException; OutOfBoundsException; OverflowException;
+				PDOException; RangeException; UnderflowException; UnexpectedValueException;
+				stdClass;
+				ArrayIterator; RecursiveArrayIterator; CachingIterator; RecursiveCachingIterator; CallbackFilterIterator; RecursiveCallbackFilterIterator;
+				DirectoryIterator; RecursiveDirectoryIterator; FilterIterator; RecursiveFilterIterator; IteratorIterator; RecursiveIteratorIterator;
+				RecursiveTreeIterator; AppendIterator; EmptyIterator; FilesystemIterator; GlobIterator; InfiniteIterator; LimitIterator; MultipleIterator;
+				NoRewindIterator; ParentIterator; 
+				ArrayObject;
+
+				// highlight disabled for context
+				as ArithmeticError;
+				as DivisionByZeroError;
+				as AssertionError;
+				as ParseError;
+				as TypeError;
+				as Error;
+				as ClosedGeneratorException;
+				as DOMException;
+				as ErrorException;
+				as IntlException;
+				as LogicException;
+				as Badthrow newCallException;
+				as BadMethodCallException;
+				as DomainException;
+				as InvalidArgumentException;
+				as LengthException;
+				as OutOfRangeException;
+				as PharException;
+				as ReflectionException;
+				as RuntimeException;
+				as OutOfBoundsException;
+				as OverflowException;
+				as PDOException;
+				as RangeException;
+				as UnderflowException;
+				as UnexpectedValueException;
+				as stdClass;
+				as ArrayIterator;
+				as RecursiveArrayIterator;
+				as CachingIterator;
+				as RecursiveCachingIterator;
+				as CallbackFilterIterator;
+				as RecursiveCallbackFilterIterator;
+				as DirectoryIterator;
+				as RecursiveDirectoryIterator;
+				as FilterIterator;
+				as RecursiveFilterIterator;
+				as IteratorIterator;
+				as RecursiveIteratorIterator;
+				as RecursiveTreeIterator;
+				as AppendIterator;
+				as EmptyIterator;
+				as FilesystemIterator;
+				as GlobIterator;
+				as InfiniteIterator;
+				as LimitIterator;
+				as MultipleIterator;
+				as NoRewindIterator;
+				as ParentIterator;
+				as ArrayObject;
+
+				class ArithmeticError{}
+				class DivisionByZeroError{}
+				class AssertionError{}
+				class ParseError{}
+				class TypeError{}
+				class Error{}
+				class ClosedGeneratorException{}
+				class DOMException{}
+				class ErrorException{}
+				class IntlException{}
+				class LogicException{}
+				class BadFunctionCallException{}
+				class BadMethodCallException{}
+				class DomainException{}
+				class InvalidArgumentException{}
+				class LengthException{}
+				class OutOfRangeException{}
+				class PharException{}
+				class ReflectionException{}
+				class RuntimeException{}
+				class OutOfBoundsException{}
+				class OverflowException{}
+				class PDOException{}
+				class RangeException{}
+				class UnderflowException{}
+				class UnexpectedValueException{}
+				class stdClass{}
+				class ArrayIterator{}
+				class RecursiveArrayIterator{}
+				class CachingIterator{}
+				class RecursiveCachingIterator{}
+				class CallbackFilterIterator{}
+				class RecursiveCallbackFilterIterator{}
+				class DirectoryIterator{}
+				class RecursiveDirectoryIterator{}
+				class FilterIterator{}
+				class RecursiveFilterIterator{}
+				class IteratorIterator{}
+				class RecursiveIteratorIterator{}
+				class RecursiveTreeIterator{}
+				class AppendIterator{}
+				class EmptyIterator{}
+				class FilesystemIterator{}
+				class GlobIterator{}
+				class InfiniteIterator{}
+				class LimitIterator{}
+				class MultipleIterator{}
+				class NoRewindIterator{}
+				class ParentIterator{}
+				class ArrayObject{}
+
+				const ArithmeticError = '';
+				const DivisionByZeroError = '';
+				const AssertionError = '';
+				const ParseError = '';
+				const TypeError = '';
+				const Error = '';
+				const ClosedGeneratorException = '';
+				const DOMException = '';
+				const ErrorException = '';
+				const IntlException = '';
+				const LogicException = '';
+				const BadFunctionCallException = '';
+				const BadMethodCallException = '';
+				const DomainException = '';
+				const InvalidArgumentException = '';
+				const LengthException = '';
+				const OutOfRangeException = '';
+				const PharException = '';
+				const ReflectionException = '';
+				const RuntimeException = '';
+				const OutOfBoundsException = '';
+				const OverflowException = '';
+				const PDOException = '';
+				const RangeException = '';
+				const UnderflowException = '';
+				const UnexpectedValueException = '';
+				const stdClass = '';
+				const ArrayIterator = '';
+				const RecursiveArrayIterator = '';
+				const CachingIterator = '';
+				const RecursiveCachingIterator = '';
+				const CallbackFilterIterator = '';
+				const RecursiveCallbackFilterIterator = '';
+				const DirectoryIterator = '';
+				const RecursiveDirectoryIterator = '';
+				const FilterIterator = '';
+				const RecursiveFilterIterator = '';
+				const IteratorIterator = '';
+				const RecursiveIteratorIterator = '';
+				const RecursiveTreeIterator = '';
+				const AppendIterator = '';
+				const EmptyIterator = '';
+				const FilesystemIterator = '';
+				const GlobIterator = '';
+				const InfiniteIterator = '';
+				const LimitIterator = '';
+				const MultipleIterator = '';
+				const NoRewindIterator = '';
+				const ParentIterator = '';
+				const ArrayObject = '';
+
+				function ArithmeticError(){}
+				function DivisionByZeroError(){}
+				function AssertionError(){}
+				function ParseError(){}
+				function TypeError(){}
+				function Error(){}
+				function ClosedGeneratorException(){}
+				function DOMException(){}
+				function ErrorException(){}
+				function IntlException(){}
+				function LogicException(){}
+				function BadFunctionCallException(){}
+				function BadMethodCallException(){}
+				function DomainException(){}
+				function InvalidArgumentException(){}
+				function LengthException(){}
+				function OutOfRangeException(){}
+				function PharException(){}
+				function ReflectionException(){}
+				function RuntimeException(){}
+				function OutOfBoundsException(){}
+				function OverflowException(){}
+				function PDOException(){}
+				function RangeException(){}
+				function UnderflowException(){}
+				function UnexpectedValueException(){}
+				function stdClass(){}
+				function ArrayIterator(){}
+				function RecursiveArrayIterator(){}
+				function CachingIterator(){}
+				function RecursiveCachingIterator(){}
+				function CallbackFilterIterator(){}
+				function RecursiveCallbackFilterIterator(){}
+				function DirectoryIterator(){}
+				function RecursiveDirectoryIterator(){}
+				function FilterIterator(){}
+				function RecursiveFilterIterator(){}
+				function IteratorIterator(){}
+				function RecursiveIteratorIterator(){}
+				function RecursiveTreeIterator(){}
+				function AppendIterator(){}
+				function EmptyIterator(){}
+				function FilesystemIterator(){}
+				function GlobIterator(){}
+				function InfiniteIterator(){}
+				function LimitIterator(){}
+				function MultipleIterator(){}
+				function NoRewindIterator(){}
+				function ParentIterator(){}
+				function ArrayObject(){}
+
+				interface ArithmeticError{}
+				interface DivisionByZeroError{}
+				interface AssertionError{}
+				interface ParseError{}
+				interface TypeError{}
+				interface Error{}
+				interface ClosedGeneratorException{}
+				interface DOMException{}
+				interface ErrorException{}
+				interface IntlException{}
+				interface LogicException{}
+				interface BadFunctionCallException{}
+				interface BadMethodCallException{}
+				interface DomainException{}
+				interface InvalidArgumentException{}
+				interface LengthException{}
+				interface OutOfRangeException{}
+				interface PharException{}
+				interface ReflectionException{}
+				interface RuntimeException{}
+				interface OutOfBoundsException{}
+				interface OverflowException{}
+				interface PDOException{}
+				interface RangeException{}
+				interface UnderflowException{}
+				interface UnexpectedValueException{}
+				interface stdClass{}
+				interface ArrayIterator{}
+				interface RecursiveArrayIterator{}
+				interface CachingIterator{}
+				interface RecursiveCachingIterator{}
+				interface CallbackFilterIterator{}
+				interface RecursiveCallbackFilterIterator{}
+				interface DirectoryIterator{}
+				interface RecursiveDirectoryIterator{}
+				interface FilterIterator{}
+				interface RecursiveFilterIterator{}
+				interface IteratorIterator{}
+				interface RecursiveIteratorIterator{}
+				interface RecursiveTreeIterator{}
+				interface AppendIterator{}
+				interface EmptyIterator{}
+				interface FilesystemIterator{}
+				interface GlobIterator{}
+				interface InfiniteIterator{}
+				interface LimitIterator{}
+				interface MultipleIterator{}
+				interface NoRewindIterator{}
+				interface ParentIterator{}
+				interface ArrayObject{}
+
+				new ArithmeticError;
+				new DivisionByZeroError;
+				new AssertionError;
+				new ParseError;
+				new TypeError;
+				new Error;
+				new ClosedGeneratorException;
+				new DOMException;
+				new ErrorException;
+				new IntlException;
+				new LogicException;
+				new BadnewCallException;
+				new BadMethodCallException;
+				new DomainException;
+				new InvalidArgumentException;
+				new LengthException;
+				new OutOfRangeException;
+				new PharException;
+				new ReflectionException;
+				new RuntimeException;
+				new OutOfBoundsException;
+				new OverflowException;
+				new PDOException;
+				new RangeException;
+				new UnderflowException;
+				new UnexpectedValueException;
+				new stdClass;
+				new ArrayIterator;
+				new RecursiveArrayIterator;
+				new CachingIterator;
+				new RecursiveCachingIterator;
+				new CallbackFilterIterator;
+				new RecursiveCallbackFilterIterator;
+				new DirectoryIterator;
+				new RecursiveDirectoryIterator;
+				new FilterIterator;
+				new RecursiveFilterIterator;
+				new IteratorIterator;
+				new RecursiveIteratorIterator;
+				new RecursiveTreeIterator;
+				new AppendIterator;
+				new EmptyIterator;
+				new FilesystemIterator;
+				new GlobIterator;
+				new InfiniteIterator;
+				new LimitIterator;
+				new MultipleIterator;
+				new NoRewindIterator;
+				new ParentIterator;
+				new ArrayObject;
+
+				Ns\ArithmeticError;
+				Ns\DivisionByZeroError;
+				Ns\AssertionError;
+				Ns\ParseError;
+				Ns\TypeError;
+				Ns\Error;
+				Ns\ClosedGeneratorException;
+				Ns\DOMException;
+				Ns\ErrorException;
+				Ns\IntlException;
+				Ns\LogicException;
+				Ns\Badthrow newCallException;
+				Ns\BadMethodCallException;
+				Ns\DomainException;
+				Ns\InvalidArgumentException;
+				Ns\LengthException;
+				Ns\OutOfRangeException;
+				Ns\PharException;
+				Ns\ReflectionException;
+				Ns\RuntimeException;
+				Ns\OutOfBoundsException;
+				Ns\OverflowException;
+				Ns\PDOException;
+				Ns\RangeException;
+				Ns\UnderflowException;
+				Ns\UnexpectedValueException;
+				Ns\stdClass;
+				Ns\ArrayIterator;
+				Ns\RecursiveArrayIterator;
+				Ns\CachingIterator;
+				Ns\RecursiveCachingIterator;
+				Ns\CallbackFilterIterator;
+				Ns\RecursiveCallbackFilterIterator;
+				Ns\DirectoryIterator;
+				Ns\RecursiveDirectoryIterator;
+				Ns\FilterIterator;
+				Ns\RecursiveFilterIterator;
+				Ns\IteratorIterator;
+				Ns\RecursiveIteratorIterator;
+				Ns\RecursiveTreeIterator;
+				Ns\AppendIterator;
+				Ns\EmptyIterator;
+				Ns\FilesystemIterator;
+				Ns\GlobIterator;
+				Ns\InfiniteIterator;
+				Ns\LimitIterator;
+				Ns\MultipleIterator;
+				Ns\NoRewindIterator;
+				Ns\ParentIterator;
+				Ns\ArrayObject;
+
+				throw new ArithmeticError;
+				throw new DivisionByZeroError;
+				throw new AssertionError;
+				throw new ParseError;
+				throw new TypeError;
+				throw new Error;
+				throw new ClosedGeneratorException;
+				throw new DOMException;
+				throw new ErrorException;
+				throw new IntlException;
+				throw new LogicException;
+				throw new Badthrow newCallException;
+				throw new BadMethodCallException;
+				throw new DomainException;
+				throw new InvalidArgumentException;
+				throw new LengthException;
+				throw new OutOfRangeException;
+				throw new PharException;
+				throw new ReflectionException;
+				throw new RuntimeException;
+				throw new OutOfBoundsException;
+				throw new OverflowException;
+				throw new PDOException;
+				throw new RangeException;
+				throw new UnderflowException;
+				throw new UnexpectedValueException;
+				throw new stdClass;
+				throw new ArrayIterator;
+				throw new RecursiveArrayIterator;
+				throw new CachingIterator;
+				throw new RecursiveCachingIterator;
+				throw new CallbackFilterIterator;
+				throw new RecursiveCallbackFilterIterator;
+				throw new DirectoryIterator;
+				throw new RecursiveDirectoryIterator;
+				throw new FilterIterator;
+				throw new RecursiveFilterIterator;
+				throw new IteratorIterator;
+				throw new RecursiveIteratorIterator;
+				throw new RecursiveTreeIterator;
+				throw new AppendIterator;
+				throw new EmptyIterator;
+				throw new FilesystemIterator;
+				throw new GlobIterator;
+				throw new InfiniteIterator;
+				throw new LimitIterator;
+				throw new MultipleIterator;
+				throw new NoRewindIterator;
+				throw new ParentIterator;
+				throw new ArrayObject;
+
+				trait ArithmeticError{}
+				trait DivisionByZeroError{}
+				trait AssertionError{}
+				trait ParseError{}
+				trait TypeError{}
+				trait Error{}
+				trait ClosedGeneratorException{}
+				trait DOMException{}
+				trait ErrorException{}
+				trait IntlException{}
+				trait LogicException{}
+				trait BadFunctionCallException{}
+				trait BadMethodCallException{}
+				trait DomainException{}
+				trait InvalidArgumentException{}
+				trait LengthException{}
+				trait OutOfRangeException{}
+				trait PharException{}
+				trait ReflectionException{}
+				trait RuntimeException{}
+				trait OutOfBoundsException{}
+				trait OverflowException{}
+				trait PDOException{}
+				trait RangeException{}
+				trait UnderflowException{}
+				trait UnexpectedValueException{}
+				trait stdClass{}
+				trait ArrayIterator{}
+				trait RecursiveArrayIterator{}
+				trait CachingIterator{}
+				trait RecursiveCachingIterator{}
+				trait CallbackFilterIterator{}
+				trait RecursiveCallbackFilterIterator{}
+				trait DirectoryIterator{}
+				trait RecursiveDirectoryIterator{}
+				trait FilterIterator{}
+				trait RecursiveFilterIterator{}
+				trait IteratorIterator{}
+				trait RecursiveIteratorIterator{}
+				trait RecursiveTreeIterator{}
+				trait AppendIterator{}
+				trait EmptyIterator{}
+				trait FilesystemIterator{}
+				trait GlobIterator{}
+				trait InfiniteIterator{}
+				trait LimitIterator{}
+				trait MultipleIterator{}
+				trait NoRewindIterator{}
+				trait ParentIterator{}
+				trait ArrayObject{}
+
+			#::
+			#:k28:
+
+				namespace Test\Test;
+
+				namespace Test\Test
+				{
+				}
+
+			#::
+			#:k29:
+
+				class Test
+				{
+				}
+
+				class Test<T>
+				{
+				}
+
+				class Test<A<a, b>, B<a, b>, C<a, b<c, d>>>
+				{
+				}
+
+			#::
+
+			#:k30:
+
+				function()
+				{
+				}
+
+				function<T>()
+				{
+				}
+
+				function<A<a, b>, B<a, b>, C<a, b<c, d>>>()
+				{
+				}
+
+				function test()
+				{
+				}
+
+				function test<T>()
+				{
+				}
+
+				function test<A<a, b>, B<a, b>, C<a, b<c, d>>>()
+				{
+				}
+			#::
+			#:k31:
+
+				new class{}
+
+				new class<T>{}
+
+				new class<A<a, b>, B<a, b>, C<a, b<c, d>>>{}
+
+			#::
+			#:k32 [not in use]:
+				
+				#~ issue (multiple): extracting type hint will create side effects with other keyword patterns, @see k20
+				const int<t> test_0_1 = 0x01;
+				public const int<t> test_1_1 = 0x01;
+				protected const int<t> test_2_1 = 0x01;
+				private const int<t> test_3_1 = 0x01;
+			
+				const array test_0_1 =
+				[
+					'a' => 'b',
+					'c' =>
+					[
+						1, 2, 3
+					]
+				];
+			
+				public int<t> $test_1_1_0 = 0x01;
+				protected int<t> $test_2_1_0 = 0x01;
+				private int<t> $test_3_1_0 = 0x01;
+				
+				public static int<t> $test_1_1_1 = 0x01;
+				protected static int<t> $test_2_1_1 = 0x01;
+				private static int<t> $test_3_1_1 = 0x01;
+			
+				public array $test_0_1 =
+				[
+					'a' => 'b',
+					'c' =>
+					[
+						1, 2, 3
+					]
+				];
+
+			#::
+		#::
+	#::
+#::
+
+//@examples
+#:test scripts:
+	
+	$x = new class<t>($a, $b) extends Bar implements Baz
+	{
+		function nested()
+		{
+			return [
+				new class<t>($a, $b) extends Bar implements Baz
+				{
+				},
+				new class<t>($c, $d) extends Bar implements Baz
+				{
+				}
+			];
+		}
+	};
+	
+	$y = function<t>($a, $b) use ($c, $d)
+	{
+		return [
+			'a' => function<t>($a, $b) use ($c, $d)
+			{
+				
+			},
+			'b' => function<t>($e, $f) use ($g, $h)
+			{
+				
+			}
+		];
+	};
+	
+	class TEST_Using<t>
+	{
+		use test_0<t>;
+		
+		use test_1<t>
+		{
+			test_1_1<t> as public;
+			test_1_2<t> as protected;
+			test_1_3<t> as private;
+		}
+		
+		use test_2<t>
+		{
+			test_2_1_0<t> as public test_2_1_1<t>;
+			test_2_2_0<t> as protected test_2_2_1<t>;
+			test_2_3_0<t> as private test_2_3_1<t>;
+		}
+	}
+	
+	class TEST_Constants<t>
+	{
+		const test_0_0 = 0x01;
+		public const test_1_0 = 0x01;
+		protected const test_2_0 = 0x01;
+		private const test_3_0 = 0x01;
+		
+		const int<t> test_0_1 = 0x01;
+		public const int<t> test_1_1 = 0x01;
+		protected const int<t> test_2_1 = 0x01;
+		private const int<t> test_3_1 = 0x01;
+
+		const int[] test_0_1 = 0x01;
+		public const int[] test_1_1 = 0x01;
+		protected const int[] test_2_1 = 0x01;
+		private const int[] test_3_1 = 0x01;
+		
+		public const array test_0_1 =
+		[
+			'a' => 'b',
+			'c' =>
+			[
+				1, 2, 3
+			]
+		];
+	}
+	
+	class TEST_Properties<t>
+	{
+		public $test_1_0_0 = 0x01;
+		protected $test_2_0_0 = 0x01;
+		private $test_3_0_0 = 0x01;
+		
+		public static $test_1_0_1 = 0x01;
+		protected static $test_2_0_1 = 0x01;
+		private static $test_3_0_1 = 0x01;
+		
+		public int<t> $test_1_1_0 = 0x01;
+		protected int<t> $test_2_1_0 = 0x01;
+		private int<t> $test_3_1_0 = 0x01;
+		
+		public static int<t> $test_1_1_1 = 0x01;
+		protected static int<t> $test_2_1_1 = 0x01;
+		private static int<t> $test_3_1_1 = 0x01;
+		
+		public array $test_0_1 =
+		[
+			'a' => 'b',
+			'c' =>
+			[
+				1, 2, 3
+			]
+		];
+	}
+	
+	class TEST_Anonymous<t>
+	{
+		function anonClass<t>()
+		{
+			return new class<t>($a, $b) extends Bar implements Baz
+			{
+			};
+		}
+		
+		function anonFunction<t>()
+		{
+			return function<t>($a, $b) use ($c)
+			{
+			};
+		}
+	}
+	
+	class TEST_MethodSignatures<t>
+	{
+		function test_0_0_0<t>();
+		
+		static function test_0_0_1<t>();
+		
+		public function test_1_1_0<t>();
+		
+		public static function test_1_1_1<t>();
+		
+		final public function test_1_2_0<t>();
+		
+		final public static function test_1_2_1<t>();
+		
+		abstract public function test_1_3_0<t>();
+		
+		abstract public static function test_1_3_1<t>();
+		
+		protected function test_2_1_0<t>();
+		
+		protected static function test_2_1_1<t>();
+		
+		final protected function test_2_2_0<t>();
+		
+		final protected static function test_2_2_1<t>();
+		
+		abstract protected function test_2_3_0<t>();
+		
+		abstract protected static function test_2_3_1<t>();
+		
+		private function test_3_1_0<t>();
+		
+		private static function test_3_1_1<t>();
+		
+		final private function test_3_2_0<t>();
+		
+		final private static function test_3_2_1<t>();
+		
+		abstract private function test_3_3_0<t>();
+		
+		abstract private static function test_3_3_1<t>();
+	}
+	
+	class TEST_Methods<t>
+	{
+		function test_0_0_0<t>()
+		{
+		}
+		
+		static function test_0_0_1<t>()
+		{
+		}
+		
+		public function test_1_1_0<t>()
+		{
+		}
+		
+		public static function test_1_1_1<t>()
+		{
+		}
+		
+		final public function test_1_2_0<t>()
+		{
+		}
+		
+		final public static function test_1_2_1<t>()
+		{
+		}
+		
+		abstract public function test_1_3_0<t>()
+		{
+		}
+		
+		abstract public static function test_1_3_1<t>()
+		{
+		}
+		
+		protected function test_2_1_0<t>()
+		{
+		}
+		
+		protected static function test_2_1_1<t>()
+		{
+		}
+		
+		final protected function test_2_2_0<t>()
+		{
+		}
+		
+		final protected static function test_2_2_1<t>()
+		{
+		}
+		
+		abstract protected function test_2_3_0<t>()
+		{
+		}
+		
+		abstract protected static function test_2_3_1<t>()
+		{
+		}
+		
+		private function test_3_1_0<t>()
+		{
+		}
+		
+		private static function test_3_1_1<t>()
+		{
+		}
+		
+		final private function test_3_2_0<t>()
+		{
+		}
+		
+		final private static function test_3_2_1<t>()
+		{
+		}
+		
+		abstract private function test_3_3_0<t>()
+		{
+		}
+		
+		abstract private static function test_3_3_1<t>()
+		{
+		}
+	}
+	
+	class test_0_0<t>
+	{
+	}
+	
+	public class test_1_1<t>
+	{
+	}
+	
+	final public class test_1_2<t>
+	{
+	}
+	
+	abstract public class test_1_3<t>
+	{
+	}
+	
+	protected class test_2_1<t>
+	{
+	}
+	
+	final protected class test_2_2<t>
+	{
+	}
+	
+	abstract protected class test_2_3<t>
+	{
+	}
+	
+	private class test_3_1<t>
+	{
+	}
+	
+	final private class test_3_2<t>
+	{
+	}
+	
+	abstract private class test_3_3<t>
+	{
+	}
+	
+	
+	
+	
+	interface test_0_0<t>
+	{
+	}
+	
+	public interface test_1_1<t>
+	{
+	}
+	
+	protected interface test_2_1<t>
+	{
+	}
+	
+	private interface test_3_1<t>
+	{
+	}
+	
+	
+	
+	
+	trait test_0_0<t>
+	{
+	}
+	
+	public trait test_1_1<t>
+	{
+	}
+	
+	protected trait test_2_1<t>
+	{
+	}
+	
+	private trait test_3_1<t>
+	{
+	}
+
+	#:php:
+
+	namespace ILLI\Core\Std\Collection;
+	use ILLI\Core\Std\Collection\CompatibleComparer;
+	use ILLI\Core\Std\Collection\DictionaryEntry;
+	use ILLI\Core\Std\Collection\HashCodeProvider;
+	use ILLI\Core\Std\Collection\HashTable\Internal\Bucket;
+	use ILLI\Core\Std\Collection\HashTable\Internal\Buckets;
+	use ILLI\Core\Std\Collection\HashTable\Internal\Collection\Keys;
+	use ILLI\Core\Std\Collection\HashTable\Internal\Collection\Values;
+	use ILLI\Core\Std\Collection\HashTable\Internal\HashHelper;
+	use ILLI\Core\Std\Collection\ICollection;
+	use ILLI\Core\Std\Collection\IComparer;
+	use ILLI\Core\Std\Collection\IDictionary;
+	use ILLI\Core\Std\Collection\IEnumerable;
+	use ILLI\Core\Std\Collection\IEqualityComparer;
+	use ILLI\Core\Std\Collection\IHashCodeProvider;
+	use ILLI\Core\Std\IObject;
+	use ILLI\Core\Std\IObject\__import_IObject;
+	use ILLI\Core\Std\IObject\Descriptor\IDebugInfo;
+	use ILLI\Core\Std\Variable;
+	
+	/**
+	 * \class{ILLI::Core::Std::Collection::HashTable}
+	 */
+	class HashTable implements IObject, IEnumerable, ICollection, IDictionary, IDebugInfo
+	{
+		use __import_IObject;
+		
+		#:dependencies:
+		static function Core_Std_Collection_HashCodeProvider___manager_check_class__()
+		{
+			return [
+				CompatibleComparer::class,
+				DictionaryEntry::class,
+				HashCodeProvider::class,
+				HashHelper::class,
+				Bucket::class,
+				Buckets::class,
+				Keys::class,
+				Values::class,
+				Variable::class
+			];
+		}
+		
+		static function Core_Std_Collection_HashCodeProvider___manager_check_interface__()
+		{
+			return [
+				IComparer::class,
+				IHashCodeProvider::class,
+				IEqualityComparer::class
+			];
+		}
+		
+		static function Core_Std_Collection_HashCodeProvider___manager_check_function__()
+		{
+			return [
+				'func_get_args',
+				'func_num_args'
+			];
+		}
+		#::
+		
+		/**
+		 * hash prime
+		 * \property int $__p
+		 */
+		private			$__p			= 101;
+		
+		/**
+		 * initial size
+		 * \property int $__i
+		 */
+		private			$__i			= 3;
+		
+		/**
+		 * initial capacity
+		 * \property int $__l
+		 */
+		private			$__l			= 0x00;
+		
+		/**
+		 * next id
+		 * \property int $__n
+		 */
+		private			$__n			= 0x00;
+		
+		/**
+		 * count
+		 * \property int $__c
+		 */
+		private			$__c			= 0x00;
+		
+		/**
+		 * occupancy
+		 * \property int $__o
+		 */
+		private			$__o			= 0x00;
+		
+		/**
+		 * load size
+		 * \property int $__s
+		 */
+		private			$__s			= 0x00;
+		
+		/**
+		 * load factor
+		 * \property int $__f
+		 */
+		private			$__f			= 0.0;
+		
+		/**
+		 * buckets
+		 * \property ILLI::Core::Std::Collection::HashTable::Internal::Buckets $__B
+		 */
+		private			$__B			= NULL;
+		
+		/**
+		 * keys
+		 * \property ILLI::Core::Std::Collection::HashTable::Internal::Collection::Keys $__K
+		 */
+		private			$__K			= NULL;
+		
+		/**
+		 * values
+		 * \property ILLI::Core::Std::Collection::HashTable::Internal::Collection::Values $__V
+		 */
+		private			$__V			= NULL;
+		
+		/**
+		 * comparer
+		 * \property ILLI::Core::Std::Collection::CompatibleComparer $__C
+		 */
+		private			$__C			= NULL;
+		
+		/**
+		 * read only mode
+		 * \property bool $__isReadOnly
+		 */
+		private			$__isReadOnly		= FALSE;
+		
+		/**
+		 * fixed size mode
+		 * \property bool $__isFixedSize
+		 */
+		private			$__isFixedSize		= FALSE;
+		
+		/**
+		 * Initializes a new, empty instance of the
+		 * 	`ILLI::Core::Std::Collection::HashTable` class using the default
+		 * 	initial capacity, load factor, comparer and hash code provider.
+		 * 
+		 * \rtype void
+		 */
+		function __construct()
+		{
+			static $__A, $__B, $__C, $__D, $__E, $__F, $__G,
+				$__P_1, $__P_2, $__P_3, $__P_4, $__P_5,
+				$__0x00,
+				$__0x01A, $__0x01B, $__0x01C, $__0x01D, $__0x01E, $__0x01F, $__0x01G, 
+				$__0x02A, $__0x02B, $__0x02C, $__0x02D, $__0x02E, $__0x02F, $__0x02G, $__0x02H, $__0x02I, $__0x02J, $__0x02K, $__0x02L, $__0x02M, $__0x02N, $__0x02O,
+				$__0x03A, $__0x03B, $__0x03C, $__0x03D, $__0x03E, $__0x03F, $__0x03G, $__0x03H, $__0x03I, $__0x03J,
+				$__0x04A, $__0x04B;
+			
+			NULL !== $__A ?: $__A = function(HashTable $__HashTable, int $__capacity, float $__loadFactor) : void
+			{
+				if($__capacity < 0x00)
+					throw new \Exception('$__l out of range');
+					
+				if($__loadFactor < 0.1 && $__loadFactor > 1.0)
+					throw new \Exception('$__loadFactor out of range');
+				
+				$__HashTable->__l		= $__capacity;
+				$__HashTable->__f		= 0.72 * $__loadFactor;
+				$rawSize			= ($__capacity / $__HashTable->__f);
+				$hashSize			= $__HashTable->__i;
+				
+				if($rawSize > PHP_INT_MAX)
+					throw new \Exception('Capacity overflow');
+				
+				if($rawSize > $this->__i)
+					$hashSize = HashHelper::getPrime($rawSize << 0x00);
+				
+				$__HashTable->__s = ($__HashTable->__f * $hashSize) << 0x00;
+				
+				if($__HashTable->__s >= $hashSize)
+					throw new \Exception('Invalid hashtable loadsize '.$__HashTable->__s.'; hashsize is '.$hashSize);
+				
+				$__HashTable->__B = $__HashTable->createBuckets($hashSize);
+			};
+			
+			NULL !== $__B ?: $__B = function(HashTable $__HashTable) use ($__A) : void
+			{
+				$__A($__HashTable, 0x00, 1.0);
+			};
+			
+			NULL !== $__C ?: $__C = function(HashTable $__HashTable, int $__capacity) use ($__A) : void
+			{
+				$__A($__HashTable, $__capacity, 1.0);
+			};
+			
+			NULL !== $__D ?: $__D = function(HashTable $__HashTable, float $__loadFactor) use ($__A) : void
+			{
+				$__A($__HashTable, 0x00, $__loadFactor);
+			};
+			
+			NULL !== $__E ?: $__E = function(HashTable $__HashTable, HashTable $__Table) : void
+			{
+				$__HashTable->__l	= $__Table->__l;
+				$__HashTable->__f	= $__Table->__f;
+				$__HashTable->__s	= $__Table->__s;
+				$__HashTable->__B	= $__HashTable->createBuckets($__Table->__B->count());
+			};
+			
+			NULL !== $__F ?: $__F = function(HashTable $__HashTable, IDictionary $__IDictionary) use ($__A) : void
+			{
+				$__A($__HashTable, $__IDictionary->count(), 1.0);
+			};
+			
+			NULL !== $__G ?: $__G = function(HashTable $__HashTable, IDictionary $__IDictionary, float $__loadFactor) use ($__A) : void
+			{
+				$__A($__HashTable, $__IDictionary->count(), $__loadFactor);
+			};
+			
+			NULL !== $__P_1 ?: $__P_1 = function(HashTable $__HashTable, IComparer $__IComparer) : void
+			{
+				$__HashTable->__C = new CompatibleComparer($__IComparer);
+			};
+			
+			NULL !== $__P_2 ?: $__P_2 = function(HashTable $__HashTable, IHashCodeProvider $__IHashCodeProvider) : void
+			{
+				$__HashTable->__C = new CompatibleComparer($__IHashCodeProvider);
+			};
+			
+			NULL !== $__P_3 ?: $__P_3 = function(HashTable $__HashTable, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider) : void
+			{
+				$__HashTable->__C = new CompatibleComparer($__IComparer, $__IHashCodeProvider);
+			};
+			
+			NULL !== $__P_4 ?: $__P_4 = function(HashTable $__HashTable, IEqualityComparer $__IEqualityComparer) : void
+			{
+				$__HashTable->__C = new CompatibleComparer($__IEqualityComparer->getComparer(), $__IEqualityComparer->getHashCodeProvider());
+			};
+			
+			NULL !== $__P_5 ?: $__P_5 = function(HashTable $__HashTable, IDictionary $__IDictionary) : void
+			{
+				$E = $__IDictionary->getEnumerator();
+				while(TRUE === $E->valid())
+				{
+					$__HashTable->insert($E->current()->getKey(), $E->current()->getValue(), TRUE);
+					$E->next();
+				}
+			};
+			
+			$__arguments = func_get_args();
+			
+			switch(func_num_args())
+			{
+				case 0x00:
+					NULL !== $__0x00 ?: $__0x00 = function(HashTable $__HashTable) use ($__B) : void
+					{
+						$__B($__HashTable);
+					};
+					
+					$__0x00($this);
+					return;
+				
+				case 0x01:
+					switch(TRUE)
+					{
+						case Variable::isInteger($__arguments[0x00]):
+							NULL !== $__0x01A ?: $__0x01A = function(HashTable $__HashTable, int $__capacity) use ($__C) : void
+							{
+								$__C($__HashTable, $__capacity);
+							};
+							
+							$__0x01A($this, $__arguments[0x00]);
+							return;
+				
+						case Variable::isFloat($__arguments[0x00]):
+							NULL !== $__0x01B ?: $__0x01B = function(HashTable $__HashTable, float $__loadFactor) use ($__D) : void
+							{
+								$__D($__HashTable, $__loadFactor);
+							};
+							
+							$__0x01B($this, $__arguments[0x00]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], HashTable::class):
+							NULL !== $__0x01C ?: $__0x01C = function(HashTable $__HashTable, HashTable $__Table) use ($__E, $__P_5) : void
+							{
+								$__E($__HashTable, $__Table);
+								$__P_5($__HashTable, $__Table);
+							};
+							
+							$__0x01C($this, $__arguments[0x00]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], IDictionary::class):
+							NULL !== $__0x01D ?: $__0x01D = function(HashTable $__HashTable, IDictionary $__IDictionary) use ($__F, $__P_5) : void
+							{
+								$__F($__HashTable, $__IDictionary);
+								$__P_5($__HashTable, $__Table);
+							};
+							
+							$__0x01D($this, $__arguments[0x00]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], IEqualityComparer::class):
+							NULL !== $__0x01E ?: $__0x01E = function(HashTable $__HashTable, IEqualityComparer $__IEqualityComparer) use ($__B, $__P_4) : void
+							{
+								$__P_4($__HashTable, $__IEqualityComparer);
+								$__B($__HashTable);
+							};
+							
+							$__0x01E($this, $__arguments[0x00]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], IComparer::class):
+							NULL !== $__0x01F ?: $__0x01F = function(HashTable $__HashTable, IComparer $__IComparer) use ($__B, $__P_1) : void
+							{
+								$__P_1($__HashTable, $__IComparer);
+								$__B($__HashTable);
+							};
+							
+							$__0x01F($this, $__arguments[0x00]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], IHashCodeProvider::class):
+							NULL !== $__0x01G ?: $__0x01G = function(HashTable $__HashTable, IHashCodeProvider $__IHashCodeProvider) use ($__B, $__P_2) : void
+							{
+								$__P_2($__HashTable, $__IHashCodeProvider);
+								$__B($__HashTable);
+							};
+							
+							$__0x01G($this, $__arguments[0x00]);
+							return;
+					}
+					
+					throw new \Exception('Invalid arguments');
+					return;
+				
+				case 0x02:
+					switch(TRUE)
+					{
+						case Variable::isObjectOf($__arguments[0x00], IComparer::class)
+						  && Variable::isObjectOf($__arguments[0x01], IHashCodeProvider::class):
+							NULL !== $__0x02A ?: $__0x02A = function(HashTable $__HashTable, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider) use ($__B, $__P_3) : void
+							{
+								$__P_3($__HashTable, $__IComparer, $__IHashCodeProvider);
+								$__B($__HashTable);
+							};
+							
+							$__0x02A($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], HashTable::class)
+						  && Variable::isObjectOf($__arguments[0x01], IEqualityComparer::class):
+							NULL !== $__0x02B ?: $__0x02B = function(HashTable $__HashTable, HashTable $__Table, IEqualityComparer $__IEqualityComparer) use ($__E, $__P_4, $__P_5)
+							{
+								$__P_4($__HashTable, $__IEqualityComparer);
+								$__E($__HashTable, $__IDictionary);
+								$__P_5($__HashTable, $__Table);
+							};
+							
+							$__0x02B($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], HashTable::class)
+						  && Variable::isObjectOf($__arguments[0x01], IComparer::class):
+							NULL !== $__0x02C ?: $__0x02C = function(HashTable $__HashTable, HashTable $__Table, IComparer $__IComparer) use ($__E, $__P_1, $__P_5) : void
+							{
+								$__P_1($__HashTable, $__IComparer);
+								$__E($__HashTable, $__IDictionary);
+								$__P_5($__HashTable, $__Table);
+							};
+							
+							$__0x02C($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], HashTable::class)
+						  && Variable::isObjectOf($__arguments[0x01], IHashCodeProvider::class):
+							NULL !== $__0x02D ?: $__0x02D = function(HashTable $__HashTable, HashTable $__Table, IHashCodeProvider $__IHashCodeProvider) use ($__E, $__P_2, $__P_5) : void
+							{
+								$__P_2($__HashTable, $__IHashCodeProvider);
+								$__E($__HashTable, $__IDictionary);
+								$__P_5($__HashTable, $__Table);
+							};
+							
+							$__0x02D($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], IDictionary::class)
+						  && Variable::isObjectOf($__arguments[0x01], IEqualityComparer::class):
+							NULL !== $__0x02E ?: $__0x02E = function(HashTable $__HashTable, IDictionary $__IDictionary, IEqualityComparer $__IEqualityComparer) use ($__F, $__P_4, $__P_5) : void
+							{
+								$__P_4($__HashTable, $__IEqualityComparer);
+								$__F($__HashTable, $__IDictionary);
+								$__P_5($__HashTable, $__IDictionary);
+							};
+							
+							$__0x02E($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], IDictionary::class)
+						  && Variable::isObjectOf($__arguments[0x01], IComparer::class):
+							NULL !== $__0x02F ?: $__0x02F = function(HashTable $__HashTable, IDictionary $__IDictionary, IComparer $__IComparer) use ($__F, $__P_1, $__P_5) : void
+							{
+								$__P_1($__HashTable, $__IComparer);
+								$__F($__HashTable, $__IDictionary);
+								$__P_5($__HashTable, $__IDictionary);
+							};
+							
+							$__0x02F($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], IDictionary::class)
+						  && Variable::isObjectOf($__arguments[0x01], IHashCodeProvider::class):
+							NULL !== $__0x02G ?: $__0x02G = function(HashTable $__HashTable, IDictionary $__IDictionary, IHashCodeProvider $__IHashCodeProvider) use ($__F, $__P_2, $__P_5) : void
+							{
+								$__P_2($__HashTable, $__IHashCodeProvider);
+								$__F($__HashTable, $__IDictionary);
+								$__P_5($__HashTable, $__IDictionary);
+							};
+							
+							$__0x02G($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+							
+						case Variable::isObjectOf($__arguments[0x00], IDictionary::class)
+						  && Variable::isFloat($__arguments[0x01]):
+							NULL !== $__0x02H ?: $__0x02H = function(HashTable $__HashTable, IDictionary $__IDictionary, float $__loadFactor) use ($__G, $__P_5) : void
+							{
+								$__G($__HashTable, $__IDictionary, $__loadFactor);
+								$__P_5($__HashTable, $__IDictionary);
+							};
+							
+							$__0x02H($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+						
+						case Variable::isInteger($__arguments[0x00])
+						  && Variable::isFloat($__arguments[0x01]):
+							NULL !== $__0x02I ?: $__0x02I = function(HashTable $__HashTable, int $__capacity, float $__loadFactor) use ($__A) : void
+							{
+								$__A($__HashTable, $__capacity, $__loadFactor);
+							};
+							
+							$__0x02I($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+						
+						case Variable::isInteger($__arguments[0x00])
+						  && Variable::isObjectOf($__arguments[0x01], IEqualityComparer::class):
+							NULL !== $__0x02J ?: $__0x02J = function(HashTable $__HashTable, int $__capacity, IEqualityComparer $__IEqualityComparer) use ($__C, $__P_4) : void
+							{
+								$__P_4($__HashTable, $__IEqualityComparer);
+								$__C($__HashTable, $__capacity);
+							};
+							
+							$__0x02J($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+						
+						case Variable::isInteger($__arguments[0x00])
+						  && Variable::isObjectOf($__arguments[0x01], IComparer::class):
+							NULL !== $__0x02K ?: $__0x02K = function(HashTable $__HashTable, int $__capacity, IComparer $__IComparer) use ($__C, $__P_1) : void
+							{
+								$__P_1($__HashTable, $__IComparer);
+								$__C($__HashTable, $__capacity);
+							};
+							
+							$__0x02K($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+						
+						case Variable::isInteger($__arguments[0x00])
+						  && Variable::isObjectOf($__arguments[0x01], IHashCodeProvider::class):
+							NULL !== $__0x02L ?: $__0x02L = function(HashTable $__HashTable, int $__capacity, IHashCodeProvider $__IHashCodeProvider) use ($__C, $__P_2) : void
+							{
+								$__P_2($__HashTable, $__IHashCodeProvider);
+								$__C($__HashTable, $__capacity);
+							};
+							
+							$__0x02L($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+						
+						case Variable::isFloat($__arguments[0x00])
+						  && Variable::isObjectOf($__arguments[0x01], IEqualityComparer::class):
+							NULL !== $__0x02M ?: $__0x02M = function(HashTable $__HashTable, float $__loadFactor, IEqualityComparer $__IEqualityComparer) use ($__D, $__P_4) : void
+							{
+								$__P_4($__HashTable, $__IEqualityComparer);
+								$__D($__HashTable, $__loadFactor);
+							};
+							
+							$__0x02M($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+						
+						case Variable::isFloat($__arguments[0x00])
+						  && Variable::isObjectOf($__arguments[0x01], IComparer::class):
+							NULL !== $__0x02N ?: $__0x02N = function(HashTable $__HashTable, float $__loadFactor, IComparer $__IComparer) use ($__D, $__P_1) : void
+							{
+								$__P_1($__HashTable, $__IComparer);
+								$__D($__HashTable, $__loadFactor);
+							};
+							
+							$__0x02N($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+						
+						case Variable::isFloat($__arguments[0x00])
+						  && Variable::isObjectOf($__arguments[0x01], IHashCodeProvider::class):
+							NULL !== $__0x02O ?: $__0x02O = function(HashTable $__HashTable, float $__loadFactor, IHashCodeProvider $__IHashCodeProvider) use ($__D, $__P_2) : void
+							{
+								$__P_2($__HashTable, $__IHashCodeProvider);
+								$__D($__HashTable, $__loadFactor);
+							};
+							
+							$__0x02O($this, $__arguments[0x00], $__arguments[0x01]);
+							return;
+					}
+					
+					throw new \Exception('Invalid arguments');
+					return;
+				
+				case 0x03:
+					switch(TRUE)
+					{
+						case Variable::isObjectOf($__arguments[0x00], HashTable::class)
+						  && Variable::isObjectOf($__arguments[0x01], IComparer::class)
+						  && Variable::isObjectOf($__arguments[0x02], IHashCodeProvider::class):
+							NULL !== $__0x03A ?: $__0x03A = function(HashTable $__HashTable, HashTable $__Table, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider) use ($__E, $__P_3, $__P_5) : void
+							{
+								$__P_3($__HashTable, $__IComparer, $__IHashCodeProvider);
+								$__E($__HashTable, $__IDictionary);
+								$__P_5($__HashTable, $__Table);
+							};
+							
+							$__0x03A($this, $__arguments[0x00], $__arguments[0x01], $__arguments[0x02]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], IDictionary::class)
+						  && Variable::isObjectOf($__arguments[0x01], IComparer::class)
+						  && Variable::isObjectOf($__arguments[0x02], IHashCodeProvider::class):
+							NULL !== $__0x03B ?: $__0x03B = function(HashTable $__HashTable, IDictionary $__IDictionary, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider) use ($__F, $__P_3, $__P_5) : void
+							{
+								$__P_3($__HashTable, $__IComparer, $__IHashCodeProvider);
+								$__F($__HashTable, $__IDictionary);
+								$__P_5($__HashTable, $__IDictionary);
+							};
+							
+							$__0x03B($this, $__arguments[0x00], $__arguments[0x01], $__arguments[0x02]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], IDictionary::class)
+						  && Variable::isFloat($__arguments[0x01])
+						  && Variable::isObjectOf($__arguments[0x02], IEqualityComparer::class):
+							NULL !== $__0x03C ?: $__0x03C = function(HashTable $__HashTable, IDictionary $__Table, float $__loadFactor, IEqualityComparer $__IEqualityComparer) use ($__G, $__P_4, $__P_5) : void
+							{
+								$__P_4($__HashTable, $__IEqualityComparer);
+								$__G($__HashTable, $__IDictionary, $__loadFactor);
+								$__P_5($__HashTable, $__Table);
+							};
+							
+							$__0x03C($this, $__arguments[0x00], $__arguments[0x01], $__arguments[0x02]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], IDictionary::class)
+						  && Variable::isFloat($__arguments[0x01])
+						  && Variable::isObjectOf($__arguments[0x02], IComparer::class):
+							NULL !== $__0x03D ?: $__0x03D = function(HashTable $__HashTable, IDictionary $__Table, float $__loadFactor, IComparer $__IComparer) use ($__G, $__P_1, $__P_5) : void
+							{
+								$__P_1($__HashTable, $__IComparer);
+								$__G($__HashTable, $__IDictionary, $__loadFactor);
+								$__P_5($__HashTable, $__Table);
+							};
+							
+							$__0x03D($this, $__arguments[0x00], $__arguments[0x01], $__arguments[0x02]);
+							return;
+						
+						case Variable::isObjectOf($__arguments[0x00], IDictionary::class)
+						  && Variable::isFloat($__arguments[0x01])
+						  && Variable::isObjectOf($__arguments[0x02], IHashCodeProvider::class):
+							NULL !== $__0x03E ?: $__0x03E = function(HashTable $__HashTable, IDictionary $__Table, float $__loadFactor, IHashCodeProvider $__IHashCodeProvider) use ($__G, $__P_2, $__P_5) : void
+							{
+								$__P_2($__HashTable, $__IHashCodeProvider);
+								$__G($__HashTable, $__IDictionary, $__loadFactor);
+								$__P_5($__HashTable, $__Table);
+							};
+							
+							$__0x03E($this, $__arguments[0x00], $__arguments[0x01], $__arguments[0x02]);
+							return;
+				
+						case Variable::isInteger($__arguments[0x00])
+						  && Variable::isFloat($__arguments[0x01])
+						  && Variable::isObjectOf($__arguments[0x02], IEqualityComparer::class):
+							NULL !== $__0x03F ?: $__0x03F = function(HashTable $__HashTable, $__capacity, float $__loadFactor, IEqualityComparer $__IEqualityComparer) use ($__A, $__P_4) : void
+							{
+								$__P_4($__HashTable, $__IEqualityComparer);
+								$__A($__HashTable, $__capacity, $__loadFactor);
+							};
+							
+							$__0x03F($this, $__arguments[0x00], $__arguments[0x01], $__arguments[0x02]);
+							return;
+				
+						case Variable::isInteger($__arguments[0x00])
+						  && Variable::isFloat($__arguments[0x01])
+						  && Variable::isObjectOf($__arguments[0x02], IComparer::class):
+							NULL !== $__0x03G ?: $__0x03G = function(HashTable $__HashTable, int $__capacity, float $__loadFactor, IComparer $__IComparer) use ($__A, $__P_1) : void
+							{
+								$__P_1($__HashTable, $__IComparer);
+								$__A($__HashTable, $__capacity, $__loadFactor);
+							};
+							
+							$__0x03G($this, $__arguments[0x00], $__arguments[0x01], $__arguments[0x02]);
+							return;
+							
+						case Variable::isInteger($__arguments[0x00])
+						  && Variable::isFloat($__arguments[0x01])
+						  && Variable::isObjectOf($__arguments[0x02], IHashCodeProvider::class):
+							NULL !== $__0x03H ?: $__0x03H = function(HashTable $__HashTable, int $__capacity, float $__loadFactor, IHashCodeProvider $__IHashCodeProvider) use ($__A, $__P_2) : void
+							{
+								$__P_2($__HashTable, $__IHashCodeProvider);
+								$__A($__HashTable, $__capacity, $__loadFactor);
+							};
+							
+							$__0x03H($this, $__arguments[0x00], $__arguments[0x01], $__arguments[0x02]);
+							return;
+							
+						case Variable::isInteger($__arguments[0x00])
+						  && Variable::isObjectOf($__arguments[0x01], IComparer::class)
+						  && Variable::isObjectOf($__arguments[0x02], IHashCodeProvider::class):
+							NULL !== $__0x03I ?: $__0x03I = function(HashTable $__HashTable, int $__capacity, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider) use ($__C, $__P_3) : void
+							{
+								$__P_3($__HashTable, $__IComparer, $__IHashCodeProvider);
+								$__C($__HashTable, $__capacity);
+							};
+							
+							$__0x03I($this, $__arguments[0x00], $__arguments[0x01], $__arguments[0x02]);
+							return;
+							
+						case Variable::isFloat($__arguments[0x00])
+						  && Variable::isObjectOf($__arguments[0x01], IComparer::class)
+						  && Variable::isObjectOf($__arguments[0x02], IHashCodeProvider::class):
+							NULL !== $__0x03J ?: $__0x03J = function(HashTable $__HashTable, float $__loadFactor, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider) use ($__D, $__P_3) : void
+							{
+								$__P_3($__HashTable, $__IComparer, $__IHashCodeProvider);
+								$__D($__HashTable, $__loadFactor);
+							};
+							
+							$__0x03J($this, $__arguments[0x00], $__arguments[0x01], $__arguments[0x02]);
+							return;
+					}
+					
+					throw new \Exception('Invalid arguments');
+					return;
+					
+				case 0x04:
+					switch(TRUE)
+					{
+						case Variable::isObjectOf($__arguments[0x00], IDictionary::class)
+						  && Variable::isFloat($__arguments[0x01])
+						  && Variable::isObjectOf($__arguments[0x02], IComparer::class)
+						  && Variable::isObjectOf($__arguments[0x03], IHashCodeProvider::class):
+							NULL !== $__0x04A ?: $__0x04A = function(HashTable $__HashTable, IDictionary $__IDictionary, float $__loadFactor, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider) use ($__G, $__P_3, $__P_5) : void
+							{
+								$__P_3($__HashTable, $__IComparer, $__IHashCodeProvider);
+								$__G($__HashTable, $__IDictionary, $__loadFactor);
+								$__P_5($__HashTable, $__IDictionary);
+							};
+							
+							$__0x04A($this, $__arguments[0x00], $__arguments[0x01], $__arguments[0x02], $__arguments[0x03]);
+							return;
+							
+						case Variable::isInteger($__arguments[0x00])
+						  && Variable::isFloat($__arguments[0x01])
+						  && Variable::isObjectOf($__arguments[0x02], IComparer::class)
+						  && Variable::isObjectOf($__arguments[0x03], IHashCodeProvider::class):
+							NULL !== $__0x04B ?: $__0x04B = function(HashTable $__HashTable, int $__capacity, float $__loadFactor, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider) use ($__A, $__P_3) : void
+							{
+								$__P_3($__HashTable, $__IComparer, $__IHashCodeProvider);
+								$__A($__HashTable, $__capacity, $__loadFactor);
+							};
+							
+							$__0x04B($this, $__arguments[0x00], $__arguments[0x01], $__arguments[0x02], $__arguments[0x03]);
+							return;
+					}
+					
+					throw new \Exception('Invalid arguments');
+					return;
+						
+			}
+			
+			throw new \Exception('Invalid number of arguments');
+		}
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(int $__capacity)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified initial capacity,
+		 * 	and the default load factor, comparer and hash code provider.
+		 * \param int $__capacity The approximate number of elements that the `ILLI::Core::Std::Collection::HashTable` object can initially contain. 
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(int $__capacity, IComparer $__IComparer)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified initial capacity and `ILLI::Core::Std::Collection::IComparer`,
+		 * 	and the default load factor and hash code provider.
+		 * \param int $__capacity The approximate number of elements that the `ILLI::Core::Std::Collection::HashTable` object can initially contain.
+		 * \param ILLI::Core::Std::Collection::IComparer $__IComparer The `ILLI::Core::Std::Collection::IComparer` object to use to determine whether two keys are equal.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(int $__capacity, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified initial capacity, `ILLI::Core::Std::Collection::IComparer`
+		 * 	and `ILLI::Core::Std::Collection::IHashCodeProvider`, and the default load factor.
+		 * \param int $__capacity The approximate number of elements that the `ILLI::Core::Std::Collection::HashTable` object can initially contain.
+		 * \param ILLI::Core::Std::Collection::IComparer $__IComparer The `ILLI::Core::Std::Collection::IComparer` object to use to determine whether two keys are equal.
+		 * \param ILLI::Core::Std::Collection::IHashCodeProvider $__IHashCodeProvider The hash code provider object that supplies the hash codes for all keys in the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(int $__capacity, IEqualityComparer $__IEqualityComparer)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified initial capacity
+		 * 	and `ILLI::Core::Std::Collection::IEqualityComparer`, and the default load factor.
+		 * \param int $__capacity The approximate number of elements that the `ILLI::Core::Std::Collection::HashTable` object can initially contain.
+		 * \param ILLI::Core::Std::Collection::IEqualityComparer $__IEqualityComparer The `ILLI::Core::Std::Collection::IEqualityComparer` object that defines the comparer and the hash code provider to use with the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(int $__capacity, IHashCodeProvider $__IHashCodeProvider)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified initial capacity
+		 * 	and `ILLI::Core::Std::Collection::IHashCodeProvider`, and the default load factor and comparer.
+		 * \param int $__capacity The approximate number of elements that the `ILLI::Core::Std::Collection::HashTable` object can initially contain.
+		 * \param ILLI::Core::Std::Collection::IHashCodeProvider $__IHashCodeProvider The hash code provider object that supplies the hash codes for all keys in the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(int $__capacity, float $__loadFactor)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified initial capacity
+		 * 	and load factor, and the default comparer and hash code provider.
+		 * \param int $__capacity The approximate number of elements that the `ILLI::Core::Std::Collection::HashTable` object can initially contain.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(int $__capacity, float $__loadFactor, IComparer $__IComparer)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified initial capacity, load factor
+		 * 	and `ILLI::Core::Std::Collection::IComparer`, and the default hash code provider.
+		 * \param int $__capacity The approximate number of elements that the `ILLI::Core::Std::Collection::HashTable` object can initially contain.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \param ILLI::Core::Std::Collection::IComparer $__IComparer The `ILLI::Core::Std::Collection::IComparer` object to use to determine whether two keys are equal.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(int $__capacity, float $__loadFactor, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified initial capacity, load factor,
+		 * 	`ILLI::Core::Std::Collection::IComparer` and `ILLI::Core::Std::Collection::IHashCodeProvider`.
+		 * \param int $__capacity The approximate number of elements that the `ILLI::Core::Std::Collection::HashTable` object can initially contain.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \param ILLI::Core::Std::Collection::IComparer $__IComparer The `ILLI::Core::Std::Collection::IComparer` object to use to determine whether two keys are equal.
+		 * \param ILLI::Core::Std::Collection::IHashCodeProvider $__IHashCodeProvider The hash code provider object that supplies the hash codes for all keys in the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(int $__capacity, float $__loadFactor, IEqualityComparer $__IEqualityComparer)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified initial capacity, load factor
+		 * 	and `ILLI::Core::Std::Collection::IEqualityComparer`.
+		 * \param int $__capacity The approximate number of elements that the `ILLI::Core::Std::Collection::HashTable` object can initially contain.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \param ILLI::Core::Std::Collection::IEqualityComparer $__IEqualityComparer The `ILLI::Core::Std::Collection::IEqualityComparer` object that defines the comparer and the hash code provider to use with the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(int $__capacity, float $__loadFactor, IHashCodeProvider $__IHashCodeProvider)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified initial capacity, load factor
+		 * 	and `ILLI::Core::Std::Collection::IHashCodeProvider`, and the default comparer.
+		 * \param int $__capacity The approximate number of elements that the `ILLI::Core::Std::Collection::HashTable` object can initially contain.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \param ILLI::Core::Std::Collection::IHashCodeProvider $__IHashCodeProvider The hash code provider object that supplies the hash codes for all keys in the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(HashTable $__HashTable)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::HashTable` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the same load factor, comparer and hash code provider.
+		 * \param ILLI::Core::Std::Collection::HashTable $__HashTable The `ILLI::Core::Std::Collection::HashTable` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		 
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(HashTable $__HashTable, IComparer $__IComparer)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::HashTable` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the specified `ILLI::Core::Std::Collection::IComparer`,
+		 * 	and the same load factor and hash code provider.
+		 * \param ILLI::Core::Std::Collection::HashTable $__HashTable The `ILLI::Core::Std::Collection::HashTable` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \param ILLI::Core::Std::Collection::IComparer $__IComparer The `ILLI::Core::Std::Collection::IComparer` object to use to determine whether two keys are equal.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		 
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(HashTable $__HashTable, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::HashTable` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the specified `ILLI::Core::Std::Collection::IComparer` and `ILLI::Core::Std::Collection::IHashCodeProvider`,
+		 * 	and the same load factor.
+		 * \param ILLI::Core::Std::Collection::HashTable $__HashTable The `ILLI::Core::Std::Collection::HashTable` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \param ILLI::Core::Std::Collection::IComparer $__IComparer The `ILLI::Core::Std::Collection::IComparer` object to use to determine whether two keys are equal.
+		 * \param ILLI::Core::Std::Collection::IHashCodeProvider $__IHashCodeProvider The hash code provider object that supplies the hash codes for all keys in the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		 
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(HashTable $__HashTable, IEqualityComparer $__IEqualityComparer)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::HashTable` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the specified `ILLI::Core::Std::Collection::IEqualityComparer`,
+		 * 	and the same load factor.
+		 * \param ILLI::Core::Std::Collection::HashTable $__HashTable The `ILLI::Core::Std::Collection::HashTable` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \param ILLI::Core::Std::Collection::IEqualityComparer $__IEqualityComparer The `ILLI::Core::Std::Collection::IEqualityComparer` object that defines the comparer and the hash code provider to use with the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		 
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(HashTable $__HashTable, IHashCodeProvider $__IHashCodeProvider)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::HashTable` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the specified `ILLI::Core::Std::Collection::IHashCodeProvider`,
+		 * 	and the same load factor and comparer.
+		 * \param ILLI::Core::Std::Collection::HashTable $__HashTable The `ILLI::Core::Std::Collection::HashTable` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \param ILLI::Core::Std::Collection::IHashCodeProvider $__IHashCodeProvider The hash code provider object that supplies the hash codes for all keys in the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(IComparer $__IComparer)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified initial capacity
+		 * 	and `ILLI::Core::Std::Collection::IComparer`,
+		 * 	and the default initial capacity, load factor and hash code provider.
+		 * \param ILLI::Core::Std::Collection::IComparer $__IComparer The `ILLI::Core::Std::Collection::IComparer` object to use to determine whether two keys are equal.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified initial capacity
+		 * 	and `ILLI::Core::Std::Collection::IComparer` and `ILLI::Core::Std::Collection::IHashCodeProvider`,
+		 * 	and the default initial capacity and load factor.
+		 * \param ILLI::Core::Std::Collection::IComparer $__IComparer The `ILLI::Core::Std::Collection::IComparer` object to use to determine whether two keys are equal.
+		 * \param ILLI::Core::Std::Collection::IHashCodeProvider $__IHashCodeProvider The hash code provider object that supplies the hash codes for all keys in the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(IDictionary $__IDictionary)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::IDictionary` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the default load factor, comparer and hash code provider.
+		 * \param ILLI::Core::Std::Collection::IDictionary $__IDictionary The `ILLI::Core::Std::Collection::IDictionary` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(IDictionary $__IDictionary, IComparer $__IComparer)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::IDictionary` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the specified `ILLI::Core::Std::Collection::IComparer`,
+		 * 	and the default load factor and hash code provider.
+		 * \param ILLI::Core::Std::Collection::IDictionary $__IDictionary The `ILLI::Core::Std::Collection::IDictionary` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \param ILLI::Core::Std::Collection::IComparer $__IComparer The `ILLI::Core::Std::Collection::IComparer` object to use to determine whether two keys are equal.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(IDictionary $__IDictionary, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::IDictionary` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the specified `ILLI::Core::Std::Collection::IComparer` and `ILLI::Core::Std::Collection::IHashCodeProvider`,
+		 * 	and the default load factor.
+		 * \param ILLI::Core::Std::Collection::IDictionary $__IDictionary The `ILLI::Core::Std::Collection::IDictionary` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \param ILLI::Core::Std::Collection::IComparer $__IComparer The `ILLI::Core::Std::Collection::IComparer` object to use to determine whether two keys are equal.
+		 * \param ILLI::Core::Std::Collection::IHashCodeProvider $__IHashCodeProvider The hash code provider object that supplies the hash codes for all keys in the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(IDictionary $__IDictionary, IEqualityComparer $__IEqualityComparer)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::IDictionary` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the specified `ILLI::Core::Std::Collection::IEqualityComparer`,
+		 * 	and the default load factor.
+		 * \param ILLI::Core::Std::Collection::IDictionary $__IDictionary The `ILLI::Core::Std::Collection::IDictionary` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \param ILLI::Core::Std::Collection::IEqualityComparer $__IEqualityComparer The `ILLI::Core::Std::Collection::IEqualityComparer` object that defines the comparer and the hash code provider to use with the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(IDictionary $__IDictionary, IHashCodeProvider $__IHashCodeProvider)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::IDictionary` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the specified `ILLI::Core::Std::Collection::IHashCodeProvider`,
+		 * 	and the default comparer and load factor.
+		 * \param ILLI::Core::Std::Collection::IDictionary $__IDictionary The `ILLI::Core::Std::Collection::IDictionary` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \param ILLI::Core::Std::Collection::IHashCodeProvider $__IHashCodeProvider The hash code provider object that supplies the hash codes for all keys in the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(IDictionary $__IDictionary, float $__loadFactor)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::IDictionary` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the specified load factor,
+		 * 	and the default comparer and hash code provider.
+		 * \param ILLI::Core::Std::Collection::IDictionary $__IDictionary The `ILLI::Core::Std::Collection::IDictionary` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(IDictionary $__IDictionary, float $__loadFactor, IComparer $__IComparer)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::IDictionary` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the specified load factor and `ILLI::Core::Std::Collection::IComparer`,
+		 * 	and the default hash code provider.
+		 * \param ILLI::Core::Std::Collection::IDictionary $__IDictionary The `ILLI::Core::Std::Collection::IDictionary` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \param ILLI::Core::Std::Collection::IComparer $__IComparer The `ILLI::Core::Std::Collection::IComparer` object to use to determine whether two keys are equal.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(IDictionary $__IDictionary, float $__loadFactor, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::IDictionary` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the specified load factor, `ILLI::Core::Std::Collection::IComparer` and `ILLI::Core::Std::Collection::IHashCodeProvider`.
+		 * \param ILLI::Core::Std::Collection::IDictionary $__IDictionary The `ILLI::Core::Std::Collection::IDictionary` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \param ILLI::Core::Std::Collection::IComparer $__IComparer The `ILLI::Core::Std::Collection::IComparer` object to use to determine whether two keys are equal.
+		 * \param ILLI::Core::Std::Collection::IHashCodeProvider $__IHashCodeProvider The hash code provider object that supplies the hash codes for all keys in the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(IDictionary $__IDictionary, float $__loadFactor, IEqualityComparer $__IEqualityComparer)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::IDictionary` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the specified load factor and `ILLI::Core::Std::Collection::IEqualityComparer`.
+		 * \param ILLI::Core::Std::Collection::IDictionary $__IDictionary The `ILLI::Core::Std::Collection::IDictionary` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \param ILLI::Core::Std::Collection::IEqualityComparer $__IEqualityComparer The `ILLI::Core::Std::Collection::IEqualityComparer` object that defines the comparer and the hash code provider to use with the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(IDictionary $__IDictionary, float $__loadFactor, IHashCodeProvider $__IHashCodeProvider)
+		 * \brief Initializes a new instance of the `ILLI::Core::Std::Collection::HashTable` class by copying the elements from the specified
+		 * 	`ILLI::Core::Std::Collection::IDictionary` to the new `ILLI::Core::Std::Collection::HashTable` object.
+		 * 	The new `ILLI::Core::Std::Collection::HashTable` object has an initial capacity equal to the number of elements copied,
+		 * 	and uses the specified load factor and `ILLI::Core::Std::Collection::IHashCodeProvider`,
+		 * 	and the default comparer.
+		 * \param ILLI::Core::Std::Collection::IDictionary $__IDictionary The `ILLI::Core::Std::Collection::IDictionary` object to copy to a new `ILLI::Core::Std::Collection::HashTable` object.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \param ILLI::Core::Std::Collection::IHashCodeProvider $__IHashCodeProvider The hash code provider object that supplies the hash codes for all keys in the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(IEqualityComparer $__IEqualityComparer)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified `ILLI::Core::Std::Collection::IEqualityComparer`,
+		 * 	and the default initial capacity and load factor.
+		 * \param ILLI::Core::Std::Collection::IEqualityComparer $__IEqualityComparer The `ILLI::Core::Std::Collection::IEqualityComparer` object that defines the comparer and the hash code provider to use with the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(IHashCodeProvider $__IHashCodeProvider)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified `ILLI::Core::Std::Collection::IHashCodeProvider`,
+		 * 	and the default initial capacity, load factor and comparer.
+		 * \param ILLI::Core::Std::Collection::IHashCodeProvider $__IHashCodeProvider The hash code provider object that supplies the hash codes for all keys in the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(float $__loadFactor)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified load factor,
+		 * 	and the default initial capacity, comparer and hash code provider.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(float $__loadFactor, IComparer $__IComparer)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified load factor
+		 * 	and `ILLI::Core::Std::Collection::IComparer`,
+		 * 	and the default initial capacity and hash code provider.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \param ILLI::Core::Std::Collection::IComparer $__IComparer The `ILLI::Core::Std::Collection::IComparer` object to use to determine whether two keys are equal.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(float $__loadFactor, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified load factor,
+		 * 	`ILLI::Core::Std::Collection::IComparer` and `ILLI::Core::Std::Collection::IHashCodeProvider`,
+		 * 	and the default initial capacity.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \param ILLI::Core::Std::Collection::IComparer $__IComparer The `ILLI::Core::Std::Collection::IComparer` object to use to determine whether two keys are equal.
+		 * \param ILLI::Core::Std::Collection::IHashCodeProvider $__IHashCodeProvider The hash code provider object that supplies the hash codes for all keys in the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(float $__loadFactor, IEqualityComparer $__IEqualityComparer)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified load factor
+		 * 	and `ILLI::Core::Std::Collection::IEqualityComparer`,
+		 * 	and the default initial capacity.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \param ILLI::Core::Std::Collection::IEqualityComparer $__IEqualityComparer The `ILLI::Core::Std::Collection::IEqualityComparer` object that defines the comparer and the hash code provider to use with the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		/**
+		 * \fn void ILLI::Core::Std::Collection::HashTable::__construct(float $__loadFactor, IComparer $__IComparer, IHashCodeProvider $__IHashCodeProvider)
+		 * \brief Initializes a new, empty instance of the `ILLI::Core::Std::Collection::HashTable` class using the specified load factor
+		 * 	and `ILLI::Core::Std::Collection::IHashCodeProvider`,
+		 * 	and the default initial capacity and comparer.
+		 * \param float $__loadFactor A number in the range from `0.1` through `1.0` that is multiplied by the default value which provides the best performance. The result is the maximum ratio of elements to buckets.
+		 * \param ILLI::Core::Std::Collection::IHashCodeProvider $__IHashCodeProvider The hash code provider object that supplies the hash codes for all keys in the `ILLI::Core::Std::Collection::HashTable`.
+		 * \public
+		 * \overload
+		 * \memberof ILLI::Core::Std::Collection::HashTable
+		 */
+		
+		function containsKey(mixed $__key) : bool
+		{
+			return NULL !== $this->find($this->__B, $__key);
+		}
+		
+		function containsValue(mixed $__value) : bool
+		{
+			$E = $this->__B->getEnumerator();
+			
+			if(NULL === $__value)
+			{
+				while(TRUE === $E->valid())
+				{
+					if(NULL === $E->current()->getValue())
+						return TRUE;
+					
+					$E->next();
+				}
+			}
+			else
+			{
+				while(TRUE === $E->valid())
+				{
+					$Item = $E->current();
+					
+					if($Item->valueEquals($__value))
+						return TRUE;
+					
+					$E->next();
+				}
+			}
+			
+			return FALSE;
+		}
+		
+		static function fixedSize(HashTable $__HashTable) : HashTable
+		{
+			$A = new static($__HashTable);
+			$A->__isFixedSize = TRUE;
+			return $A;
+		}
+		
+		static function readOnly(HashTable $__HashTable) : HashTable
+		{
+			$A = new static($__HashTable);
+			$A->__isReadOnly = TRUE;
+			return $A;
+		}
+		
+		#:ILLI::Core::Std::IObject:
+		/**
+		 * \copydoc ILLI::Core::Std::IObject::toArray
+		 * \rtype array
+		 */
+		function toArray() : array
+		{
+			$r = [];
+			
+			$E = $this->getEnumerator();
+			while(TRUE === $E->valid())
+			{
+				$r[] = $E->current();
+				$E->next();
+			}
+			
+			return $r;
+		}
+		#::
+		#:ILLI::Core::Std::IObject::Descriptor:IDebugInfo:
+		function __debugInfo() : array
+		{
+			#! return $this->toArray();
+			return [
+				'count'			=> $this->__c,
+				'occupancy'		=> $this->__o,
+				'initialSize'		=> $this->__i,
+				'loadFactor'		=> $this->__f,
+				'loadSize'		=> $this->__s,
+				'hashPrime'		=> $this->__p,
+				'Keys'			=> $this->__K,
+				'Values'		=> $this->__V,
+				'Buckets'		=> $this->__B,
+			];
+		}
+		#::
+		#:ILLI::Core::Std::Collection::ICollection:
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::ICollection::copyTo
+		 * \rtype ILLI::Core::Std::Collection::ICollection&
+		 */
+		function copyTo(array &$__destination, int $__index = 0x00) : self
+		{
+			if(TRUE === Variable::isMultiDimensionalArray($__destination))
+				throw new \Exception('Destination is multidimensional.');
+			
+			if($__index < 0x00)
+				throw new \Exception("Index of $__index out of range");
+			
+			if(($this->count() - 0x01) > (Variable::count($__destination) - 0x01 - $__index))
+				throw new \Exception('The number of elements in the source '.HashTable::class.' is greater than the available space from index to the end of the destination array.');
+			
+			$this->copyEntries($__destination, $__index);
+			
+			return $this;
+		}
+		
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::ICollection::count
+		 * \rtype int
+		 */
+		function count() : int
+		{
+			return $this->__c;
+		}
+		#::
+		#:ILLI::Core::Std::Collection::IDictionary:
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::IDictionary::isFixedSize
+		 * \rtype bool
+		 */
+		function isReadOnly() : bool
+		{
+			return $this->__isReadOnly;
+		}
+		
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::IDictionary::isReadOnly
+		 * \rtype bool
+		 */
+		function isFixedSize() : bool
+		{
+			return $this->__isFixedSize;
+		}
+		
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::IDictionary::add
+		 * \rtype ILLI::Core::Std::Collection::HashTable&
+		 */
+		function add(mixed $__key, mixed $__value) : self
+		{
+			if(TRUE === $this->isReadOnly()
+			|| TRUE === $this->isFixedSize())
+				throw new \Exception('Not supported.');
+					
+			$this->insert($__key, $__value, TRUE);
+			return $this;
+		}
+		
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::IDictionary::clear
+		 * \rtype ILLI::Core::Std::Collection::HashTable&
+		 */
+		function clear() : self
+		{
+			if(TRUE === $this->isReadOnly())
+				throw new \Exception('Not supported.');
+			
+			$this->__o	= 0x00;
+			$this->__c		= 0x00;
+			$this->__n		= 0x00;
+			
+			$rawSize		= ($this->__l / $this->__f);
+			$hashSize		= $this->__i;
+			
+			if($rawSize > $this->__i)
+				$hashSize = HashHelper::getPrime($rawSize << 0x00);
+				
+			$this->__B		= $this->createBuckets($hashSize);
+			
+			return $this;
+		}
+		
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::IDictionary::contains
+		 * \rtype bool
+		 */
+		function contains(mixed $__key) : bool
+		{
+			return NULL !== $this->find($this->__B, $__key);
+		}
+		
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::IDictionary::remove
+		 * \rtype ILLI::Core::Std::Collection::HashTable&
+		 */
+		function remove(mixed $__key) : self
+		{
+			if(TRUE === $this->isReadOnly()
+			|| TRUE === $this->isFixedSize())
+				throw new \Exception('Not supported.');
+			
+			if(NULL === ($Item = $this->find($this->__B, $__key)))
+				return $this;
+			
+			$s	=  0x00;
+			$i	=  0x00;
+			$index	= -0x01;
+			$hash	= $this->initHash($this->__B, $__key, $s, $i, $index);
+			
+			if($Item === $this->__B->offsetGet($index))
+				$this->__B->offsetSet($index, $Item->getHead());
+			
+			if(NULL !== $Item->getHead())
+				$this->__o--;
+			
+			$Item->detach();
+			$this->__c--;
+			
+			return $this;
+		}
+		
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::IDictionary::keys
+		 * \rtype ILLI::Core::Std::Collection::ICollection
+		 */
+		function keys() : ICollection
+		{
+			if(NULL === $this->__K)
+				$this->__K = new Keys($this);
+				
+			return $this->__K;
+		}
+		
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::IDictionary::values
+		 * \rtype ILLI::Core::Std::Collection::ICollection
+		 */
+		function values() : Icollection
+		{
+			if(NULL === $this->__V)
+				$this->__V = new Values($this);
+				
+			return $this->__V;
+		}
+		
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::IDictionary::offsetSet
+		 * \rtype void
+		 */
+		function offsetSet(mixed $__key, mixed $__value) : void
+		{
+			if(TRUE === $this->isReadOnly())
+				throw new \Exception('Not supported.');
+			
+			$this->insert($__key, $__value, FALSE);
+		}
+		
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::IDictionary::offsetGet
+		 * \rtype mixed
+		 */
+		function offsetGet(mixed $__key) : mixed
+		{
+			if(NULL === ($Item = $this->find($this->__B, $__key)))
+				throw new \Exception('Entry '.$__key.' ot found');
+			
+			return $Item->getValue();
+		}
+		
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::IDictionary::offsetExists
+		 * \rtype bool
+		 */
+		function offsetExists(mixed $__key) : bool
+		{
+			return NULL !== $this->find($this->__B, $__key);
+		}
+		
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::IDictionary::offsetUnset
+		 * \rtype void
+		 */
+		function offsetUnset(mixed $__key) : void
+		{
+			if(TRUE === $this->isReadOnly()
+			|| TRUE === $this->isFixedSize())
+				throw new \Exception('Not supported.');
+			
+			$this->remove($__key);
+		}
+		#::
+		#:ILLI::Core::Std::Collection::IEnumerator:
+		/**
+		 * \copydoc ILLI::Core::Std::Collection::IEnumerable::getEnumerator
+		 * \rtype Generator
+		 */
+		function getEnumerator() : Generator
+		{
+			$E = $this->__B->getEnumerator();
+			
+			while(TRUE === $E->valid())
+			{
+				yield new DictionaryEntry($E->current()->getKey(), $E->current()->getValue());
+				$E->next();
+			}
+		}
+		#::
+		
+		private function createBuckets(int $__size) : Buckets
+		{
+			if(NULL !== $this->__B)
+				$this->__C = $this->__B->getKeyComparer();
+			
+			if(NULL === $this->__C)
+				$this->__C = new CompatibleComparer(new HashCodeProvider);
+			
+			return new Buckets($__size, $this->__C);
+		}
+		
+		private function copyEntries(ICollection &$__destination, int $__index) : void
+		{
+			$E = $this->__B->getEnumerator();
+			
+			while(TRUE === $E->valid())
+			{
+				$__destination[$__index++] = new DictionaryEntry($E->current()->getKey(), $E->current()->getValue());
+				$E->next();
+			}
+		}
+		
+		private function expand() : void
+		{
+			$rawsize = HashHelper::expandPrime($this->__B->count());
+			$this->rehash($rawsize, FALSE);
+		}
+		
+		private function find(Buckets $__Buckets, mixed $__key) : Bucket
+		{
+			$s	=  0x00;
+			$i	=  0x00;
+			$index	= -0x01;
+			
+			$h	= $this->initHash($__Buckets, $__key, $s, $i, $index);
+			
+			return $__Buckets->find($index, $__key);
+		}
+		
+		private function initHash(Buckets $__Buckets, int $__key, int &$__seed, int &$__incr, int &$__index) : int
+		{
+			$h		= $__Buckets->getHash($__key) & 0x7FFFFFFF;
+			$__seed		= $h;
+			$__incr		= 0x01 + (($__seed * $this->__p) % $__Buckets->getLastIndex());
+			$__index	= $__seed % $__Buckets->getLastIndex();
+			
+			return $h;
+		}
+		
+		private function insert(mixed $__key, mixed $__value, bool $__add) : void
+		{
+			if(NULL === $__key)
+				throw new \Exception('Argument is null');
+			
+			if($this->__c > $this->__s)
+			{
+				$this->expand();
+			}
+			else
+			if($this->__o > $this->__s
+			&& $this->__c > 100)
+			{
+				$this->rehash($this->__B->count());
+			}
+			
+			$s	=  0x00;
+			$i	=  0x00;
+			$index	= -0x01;
+			$h	= $this->initHash($this->__B, $__key, $s, $i, $index);
+			
+			if(NULL === ($Item = $this->find($this->__B, $__key)))
+			{
+				if(FALSE === $__add)
+					throw new \Exception('Entry '.$__key.' not found');
+				
+				$Bucket	= new Bucket(++$this->__n, $__key, $__value);
+				
+				if(NULL !== ($Head = $this->__B->offsetGet($index)))
+				{
+					$this->__o++;
+					$Bucket->setHead($Head);
+					$Head->setTail($Bucket);
+				}
+				
+				$this->__B->offsetSet($index, $Bucket);
+				$this->__c++;
+			}
+			else
+			{
+				if(TRUE === $__add)
+					throw new \Exception('Duplicate Entry '.$Item->getKey().' - '.$__key);
+					
+				$Item->setValue($__value);
+			}
+		}
+		
+		private function putBucket(Buckets $__Buckets, Bucket $__Bucket) : void
+		{
+			$s	=  0x00;
+			$i	=  0x00;
+			$index	= -0x01;
+			$hash	= $this->initHash($__Buckets, $__Bucket->getKey(), $s, $i, $index);
+			
+			$Bucket = new Bucket($__Bucket->getId(), $__Bucket->getKey(), $__Bucket->getValue());
+			
+			if(NULL !== ($Head = $__Buckets->offsetGet($index)))
+			{
+				$Bucket->setHead($Head);
+				$Head->setTail($Bucket);
+				$this->__o++;
+			}
+			
+			$__Buckets->offsetSet($index, $Bucket);
+		}
+		
+		private function rehash(int $__size) : void
+		{
+			$this->__o	= 0x00;
+			$hashSize		= ($__size > $this->__i) ? $__size : $this->__i;
+			$this->__s	= ($this->__f * $hashSize) << 0x00;
+			$Buckets		= $this->createBuckets($hashSize);
+			
+			$E = $this->__B->getEnumerator();
+			
+			while(TRUE === $E->valid())
+			{
+				$this->putBucket($Buckets, $E->current());
+				$E->next();
+			}
+			
+			if($this->__s >= $hashSize)
+				throw new \Exception('Invalid hashtable loadsize '.$this->__s.'; hashsize is '.$hashSize);
+					
+			$this->__B = $Buckets;
+		}
+	}
+
+	#::
+	#:hh:
+		namespace Hack\UserDocumentation\Generics\Intro\Examples\GenericMethods;
+		
+		// Testing generic methods in a non-generic class.
+		
+		class Box<T> {
+		  public T $value;
+		  public function __construct(T $v) {
+		    $this->value = $v;
+		  }
+		}
+		
+		function swap<T>(Box<T> $a, Box<T> $b) : void {
+		  $temp = $a->value;
+		  $a->value = $b->value;
+		  $b->value = $temp;
+		}
+		
+		function do_int_swap(): void {
+		  $y = new Box(3);
+		  $z = new Box(4);
+		  echo $y->value." ".$z->value;
+		  swap($y, $z);
+		  echo $y->value." ".$z->value;
+		}
+		
+		function do_string_swap(): void {
+		  $y = new Box('a');
+		  $z = new Box('b');
+		  echo $y->value." ".$z->value;
+		  swap($y, $z);
+		  echo $y->value." ".$z->value;
+		}
+		
+		function doAll(): void {
+		  do_int_swap();
+		  do_string_swap();
+		}
+		
+		doAll();
+
+
+		namespace Hack\UserDocumentation\TypeAliases\Transparent\Examples\Converted;
+		
+		type Matrix<T> = Vector<Vector<T>>;
+		
+		function add<T as num>(Matrix<T> $m1, Matrix<T> $m2): Matrix<num> {
+		  // Assumes that $m1 and $m2 have the same dimensions; real code should have
+		  // better error detection and handling of course.
+		  $r = Vector {};
+		  foreach ($m1 as $i => $row1) {
+		    $new_row = Vector {};
+		    foreach ($row1 as $j => $val1) {
+		      $new_row[] = $val1 + $m2[$i][$j];
+		    }
+		    $r[] = $new_row;
+		  }
+		
+		  return $r;
+		}
+		
+		function get_m1(): Matrix<int> {
+		  // No conversion needed from these Vectors into the Matrix return type, since
+		  // the two are equivalent.
+		  return Vector { Vector { 1, 2 }, Vector { 3, 4 } };
+		}
+		
+		function get_m2(): Vector<Vector<int>> {
+		  return Vector { Vector { 5, 6 }, Vector { 7, 8 } };
+		}
+		
+		function run(): void {
+		  var_dump(add(
+		    get_m1(),
+		    // get_m2() returns a Vector<Vector<int>>, and add() takes a Matrix<int>,
+		    // but no conversion is needed here since the two are equivalent.
+		    get_m2()
+		  ));
+		}
+		
+		run();
+	#::
+#::
+32
+TRUE
+2
+<?
+
+(?:<\?)$
+TRUE
+TRUE
+32
+0
+
+
+3
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+<?PHP
+
+(?<!\uFEFF|\s+)(?:<\?(?:php|hh))$
+TRUE
+TRUE
+6
+0
+
+
+3
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+<?php ?>
+php
+FALSE
+?>
+0
+27
+main
+1
+0
+FALSE
+0
+
+
+64
+?>
+
+\?>
+FALSE
+FALSE
+32
+0
+
+
+2
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+#:x:
+
+#:(?:[a-zA-Z0-9_^><()&/=#\?\[\] \t\\\-\.\$\{\}@+:]+):$
+TRUE
+FALSE
+26
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+#::
+section
+FALSE
+#::
+#:...
+
+#:(?!:)(?:[a-zA-Z0-9_^><()&/=#\?\[\] \t\\\-\.\$\{\}@+:]*)?(?::)?.*
+FALSE
+FALSE
+32
+0
+
+
+0
+FALSE
+FALSE
+TRUE
+FALSE
+0
+
+
+section
+FALSE
+#::
+#::
+
+#::$
+FALSE
+FALSE
+26
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+#::
+section
+FALSE
+
+{
+
+{
+FALSE
+FALSE
+25
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+{}
+php
+FALSE
+}
+}
+
+}
+FALSE
+FALSE
+25
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+{}
+php
+FALSE
+{
+(
+
+\(
+FALSE
+FALSE
+24
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+()
+php
+FALSE
+)
+)
+
+\)
+FALSE
+FALSE
+24
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+()
+php
+FALSE
+(
+[
+
+\[
+FALSE
+FALSE
+25
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+[]
+php
+FALSE
+]
+]
+
+]
+FALSE
+FALSE
+25
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+[]
+php
+FALSE
+[
+'//'
+@author Jeff Roberson
+20
+# Single quoted regex (one line, non-x mode). Rev:20101224_1200
+'                                 # Match a single quoted regex pattern string
+(?!{:)
+(?>                               # Regex delimiter: One of five alternatives. Either
+  ([^A-Za-z0-9()<>[\]{}\s'\\])    # /$1:/ non-alphanum, non-bracket, non-ws, non-['=\\],
+  | (\() | (<) | (\[) | (\{)      # or ($2:) or <$3:> or [$4:] or {$5:} bracket openings.
+)                                 # We have an opening delimiter in $1,$2,$3,$4 or $5.
+(?= # Lookahead assertion: Look for '/regex/mods' non-x mode
+  [^'\r\n\\]*(?:\\.[^'\r\n\\]*)*  # zero or more non-quote, escaped anything.
+  (                               # $6: Closing delimiter char used for bracket matching.
+    (?(1) \1 )                    # Bactrack to regex delimiter. $1 is non bracket.
+    (?(2) \) )                    # else  $2: close (parenthesesregex)
+    (?(3)  > )                    # else  $3: close <anglebracketsregex>
+    (?(4) \] )                    # else  $4: close [squarebracketsregex]
+    (?(5) \} )                    # else  $5: close {curlybracesregex}
+  )                               # End $6 = closing delimiter
+  [imseADSUXJu]{0,11}+            # optional PHP modifiers (all except x).
+  '                               # Closing quote.
+)   # End look ahead assertion: one-line, non-x mode pattern string.
+
+FALSE
+FALSE
+18
+0
+
+
+6
+FALSE
+TRUE
+FALSE
+TRUE
+0
+
+'/
+php
+FALSE
+
+'//x'
+@author Jeff Roberson
+21
+# Single quoted regex (multi line, x mode). Rev:20101224_1200
+'                                 # Match a single quoted regex pattern string
+(?!{:)
+(?>                               # Regex delimiter: One of five alternatives. Either
+  ([^A-Za-z0-9()<>[\]{}\s'\\])    # /$1:/ non-alphanum, non-bracket, non-ws, non-['=\\],
+  | (\() | (<) | (\[) | (\{)      # or ($2:) or <$3:> or [$4:] or {$5:} bracket openings.
+)                                 # We have an opening delimiter in $1,$2,$3,$4 or $5.
+(?= # Lookahead assertion: Look for '/regex/mods' x mode
+  [^'\\]*(?:\\.[^'\\]*)*          # zero or more non-quote, escaped anything. (multi-line)
+  (                               # $6: Closing delimiter char used for bracket matching.
+    (?(1) \1 )                    # Bactrack to regex delimiter. $1 is non bracket.
+    (?(2) \) )                    # else  $2: close (parenthesesregex)
+    (?(3)  > )                    # else  $3: close <anglebracketsregex>
+    (?(4) \] )                    # else  $4: close [squarebracketsregex]
+    (?(5) \} )                    # else  $5: close {curlybracesregex}
+  )                               # End $6 = closing delimiter
+  [imseADSUXJu]{0,11}+            # optional PHP modifiers (before x).
+  x                               # Required PHP x modifier.
+  [imseADSUXJu]{0,11}+            # optional PHP modifiers (after x).
+  '                               # Closing quote.
+)   # End look ahead assertion: one-line, non-x mode pattern string.
+FALSE
+TRUE
+18
+0
+
+
+5
+FALSE
+TRUE
+FALSE
+TRUE
+0
+
+'/
+php
+FALSE
+
+'
+
+'
+FALSE
+FALSE
+16
+0
+
+
+4
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+'
+php
+FALSE
+'
+"
+
+"
+FALSE
+FALSE
+17
+0
+
+
+7
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+"
+php
+FALSE
+"
+`
+
+`
+FALSE
+FALSE
+11
+0
+
+
+8
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+`
+php
+FALSE
+`
+/*+
+
+/\*\+
+FALSE
+TRUE
+27
+0
+
+
+21
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+/*+*/
+php
+FALSE
+*/
+/*!
+
+/\*!
+FALSE
+TRUE
+28
+0
+
+
+22
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+/*!*/
+php
+FALSE
+*/
+/*~
+
+/\*~
+FALSE
+FALSE
+29
+0
+
+
+23
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+/*~*/
+php
+FALSE
+*/
+/*-
+
+/\*-
+FALSE
+TRUE
+30
+0
+
+
+24
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+/*-*/
+php
+FALSE
+*/
+/**
+
+/\*\*(?!/)
+FALSE
+TRUE
+36
+0
+
+
+20
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+/***/
+php
+FALSE
+*/
+/*
+
+/\*(?!\*(?!/)|!|\+|~|-)
+FALSE
+TRUE
+9
+0
+
+
+19
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+/**/
+php
+FALSE
+*/
+//|#
+
+(?://|#(?!:))
+FALSE
+TRUE
+31
+0
+
+
+11
+FALSE
+FALSE
+TRUE
+FALSE
+
+
+
+
+FALSE
+
+Number
+
+[+-]?\b(?:(?:([0-9]+)?[.][0-9]++|[1-9][0-9]*?)|(?:0[0-7]++)|(?:0[xX][a-fA-F0-9]++)|(?:0[bB][01]++)|0|(([0-9]+|([0-9]*[\.][0-9]+)|([0-9]+[\.][0-9]*))[eE][+-]?[0-9]+))\b
+FALSE
+FALSE
+31
+0
+
+
+15
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+hdoc
+
+<<<([a-zA-Z0-9_]++)\b.*?^(\1)\b
+FALSE
+TRUE
+31
+0
+
+
+9
+FALSE
+FALSE
+FALSE
+FALSE
+0
+1
+
+here
+FALSE
+
+hdoc...
+
+<<<([a-zA-Z0-9_]++)\b.*+
+FALSE
+TRUE
+31
+0
+
+
+9
+FALSE
+FALSE
+FALSE
+FALSE
+1
+
+
+here
+FALSE
+\1
+ndoc
+
+<<<'([a-zA-Z0-9_]++)\b'.*?^(\1)\b
+FALSE
+TRUE
+31
+0
+
+
+10
+FALSE
+FALSE
+FALSE
+FALSE
+1
+2
+
+now
+FALSE
+
+ndoc...
+
+<<<'([a-zA-Z0-9_]++)\b.*+
+FALSE
+TRUE
+31
+0
+
+
+10
+FALSE
+FALSE
+FALSE
+FALSE
+1
+
+
+now
+FALSE
+\1
+k0
+
+(?<!(?:function|const)\s*)(?i:echo|print|var_dump|die|exit)\b
+FALSE
+FALSE
+33
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k1
+
+(?<=(?<!function\s*)\(\s*)(?:array|bool|float|int|object|string)(?=\s*\))
+FALSE
+FALSE
+23
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k2
+
+(?<=\(\s*)(?:unset)(?=\s*\))
+FALSE
+FALSE
+32
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k3
+
+\b(?<!(?:const|function)\s*)(?:true|false|null)\b
+TRUE
+FALSE
+6
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k4
+custom
+\b(?:(?<!(?i:const|function|class|interface|trait)\s*)__(?:attr|bit|byte|chr|class|const|dbl|dir|entity|file|flag|ini|int|interface|str|tpl|tuple|trait|type|value|yaml)_[A-Z][a-zA-Z0-9]*)\b
+FALSE
+FALSE
+12
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k5
+
+(?<=function\s+)__(?:call|callstatic|clone|construct|debuginfo|destruct|get|invoke|isset|set|set_state|sleep|tostring|unset|wake_up)\b
+TRUE
+FALSE
+0
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k6
+
+\b(?:__(?:COMPILER_HALT_OFFSET__|halt_compiler))\b
+FALSE
+FALSE
+11
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k7
+
+(?:\b(?<!(?:const|function)\s*)(?:protected|static|private)\b)
+TRUE
+FALSE
+34
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k8
+
+(?:\bnew\s+(?:self|static)\b|\bthrow\s+new(?:\s*class)?\b)
+TRUE
+FALSE
+33
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k9
+
+(?:\b(?<!(?:const|function)\s*)(?:catch|final(ly)?|new(?:\s+class)?|public|return|throw(?!\s+new)|try)\b)
+TRUE
+FALSE
+35
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k10
+experimental: type hints in function signature; @see k10 READ ME; comment this out if you don't need it... 
+2
+#(?<=function(?:\s+[a-zA-Z0-9\\_::<>,\s]+|\s*<[a-zA-Z0-9\\_::<>,\s]+>)?\s*\(\s*)(?:(?!(?<!\s*\))\s*\))\s*.)*
+(?<=function(?:\s+[a-zA-Z0-9\\_::<>,\s]+|\s*<[a-zA-Z0-9\\_::<>,\s\[\]]+>)?\s*\(\s*)(?:(?!(?<!\s*\))\s*\)(?:[^']*'[^']*')*[^']*$).)*
+FALSE
+FALSE
+34
+0
+
+
+14
+FALSE
+TRUE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k11
+
+(?<=\)\s*:\s*)\??(?!object|resource|numeric)(?:[a-zA-Z_\\][a-zA-Z0-9\\_::<>,\s\[\]]*+)+(?:\|(?:[a-zA-Z_\\][a-zA-Z0-9\\_::<>,\s\[\]]*+)+)*
+FALSE
+FALSE
+31
+0
+
+
+28
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k12
+
+(?<=\b(?i:interface|class|trait|as|throw\s+new|new)\b\s*+)\\?(?<![a-zA-Z0-9\$_>:]\\?)\b(?:__PHP_Incomplete_Class|Iterable)\b
+FALSE
+FALSE
+32
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k13
+
+\b(?<=\b(?:namespace)\b\s*)(?:array|callable|self)\b
+TRUE
+FALSE
+32
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k14
+
+\b(?<=\b(?:class)\b\s*)(?:array|bool|(?:call|iter)able|float|int|string|self|void)\b
+TRUE
+FALSE
+32
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k15
+
+\b(?<=\b(?:const)\b\s*)(?:class)\b
+FALSE
+FALSE
+32
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k16
+
+\b(?:__PHP_Incomplete_Class|Iterable)\b
+FALSE
+FALSE
+11
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k17
+
+\b(?<!\b(?:function)\b\s*)(?:class)\b
+TRUE
+FALSE
+12
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k18
+
+\b(?<!\b(?:const|function)\b\s*)(?:abstract|and|as|break|case|clone|con(?:st|tinue)|default|do|echo|else|exit|function(?!\s*\()|extends|global|goto|implements|(?:include|require)(_once)?|(?:instance|instead)of|interface|namespace|(x)?or|parent|print|trait|use|var|yield)\b
+TRUE
+FALSE
+12
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k19
+
+(?:\b(?<!\b(?:const|function)\b\s*)(?:array|declare|define|elseif|empty|eval|for(each)?|function|if|isset|list|switch|unset|while)\s*)\(\s*
+TRUE
+FALSE
+19
+0
+
+
+13
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+k19()
+php
+FALSE
+)
+k20
+
+\b(?<!\b(?:const|function)\b\s*)(?:(?:array|bool|callable|float|int|iterable|mixed|numeric|object|resource|self|string|void)(?!\s*<))(?!\s*{)\b
+TRUE
+FALSE
+12
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k21
+
+(?:\b(?<!\b(?:const|function)\b\s*)(?:__(?:CLASS|DIR|FILE|FUNCTION|LINE|METHOD|NAMESPACE|TRAIT)__)\b)
+FALSE
+FALSE
+8
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k22
+
+(?:\\?\b((?:[a-zA-Z_][a-zA-Z0-9_]*+)(?:\\?([a-zA-Z_][a-zA-Z0-9_]*+))*+)::class\b)
+FALSE
+FALSE
+8
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k23
+
+\\?(?<!\b(?:const|function|class|interface|trait|new|throw\s+new)\b\s*)\\?(?<![a-zA-Z0-9\$_>:]\\?)\bE_(?:ALL|DEPRECATED|ERROR|NOTICE|PARSE|STRICT|WARNING|(?:CORE_(?:ERROR|WARNING))|(?:COMPILE_(?:ERROR|WARNING))|(?:USER_(?:ERROR|DEPRECATED|NOTICE|WARNING)))(?!\s*::)\b
+FALSE
+FALSE
+8
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k24
+
+\\?(?<!\b(?:const|function|class|interface|trait|new|throw\s+new)\b\s*)\\?(?<![a-zA-Z0-9\$_>:]\\?)\b(?:DEFAULT_INCLUDE_PATH|PHP_(?:BINARY|CONFIG_FILE_PATH|DEBUG|(?:EXTENSION_|BIN|BIND|MAN|LIB|DATA|SYSCONF|LOCALSTATE|CONFIG_FILE_SCAN_)DIR|EOL|INT_(?:MAX|MIN|SIZE)|(MAJOR_|MINOR_|RELEASE_|EXTRA_)?VERSION|MAXPATHLEN|OS|PREFIX|SHLIB_SUFFIX|SAPI|VERSION_ID|ZTS)|PEAR_(?:(?:INSTALL|EXTENSION)_DIR))(?!\s*::)\b
+FALSE
+FALSE
+8
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k25
+
+\\?(?<!\b(?i:const|function|class|interface|trait|new|throw\s+new|as)\b\s+)\\?(?<![a-zA-Z0-9\$_>:]+\\?)\b(?:(?:Closure|Directory|Generator|Php_User_Filter_Class|Throwable)\b)
+FALSE
+FALSE
+11
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k26
+
+\\?(?<!\b(?i:const|function|class|interface|trait|new|throw\s+new)\b\s+)\\?(?<![a-zA-Z0-9\$\\_>:]+\\?)\b(?:Spl(?:DoublyLinkedList|File(?:Info|Object)|FixedArray|(?:Min|Max)?Heap|ObjectStorage|(?:Priority)?Queue|Stack|TempFileObject|[a-zA-Z0-9]+))\b
+FALSE
+FALSE
+6
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k27
+
+\\?(?<!\b(?i:const|function|class|interface|trait|new|throw\s+new|as|extends|implements)\b\s+)\\?(?<![a-zA-Z0-9\$\\_>:\]]\\?)\b(?i:(?:Arithmetic|DivisionByZero|Assertion|Parse|Type)?Error|(?:ClosedGenerator|DOM|Error|Intl|Logic|BadFunctionCall|BadMethodCall|Domain|InvalidArgument|Length|OutOfRange|Phar|Reflection|Runtime|OutOfBounds|Overflow|PDO|Range|Underflow|UnexpectedValue)?Exception|stdClass|(?:(?:(?:Recursive)?(?:Array|Caching|CallbackFilter|Directory|Filter|Iterator|Regex)|Recursive(?:Tree)|(?:Append|Empty|Filesystem|Glob|Infinite|Limit|Multiple|NoRewind|Parent))Iterator|(?:Array)Object))\b
+FALSE
+FALSE
+6
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k28
+
+(?<=\bnamespace\s+)(?:[a-zA-Z0-9\\]++)(?=\b\s*(?:;|{))
+FALSE
+FALSE
+4
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k29
+
+(?<=\b(?:(?!\bnew\s+)class|interface|trait|extends|implements|new)\s+)(?:[a-zA-Z_][a-zA-Z0-9\\_::<>,\s\[\]]*+)+(?=\s*{?)
+FALSE
+FALSE
+31
+0
+
+
+25
+FALSE
+TRUE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k30
+
+(?:(?<=\bfunction\s+)[a-zA-Z_][a-zA-Z0-9\\_::<>,\s\[\]]*|(?<=function\s*)<(?:[a-zA-Z0-9\\_::<>,\s\[\]]+)>)
+FALSE
+FALSE
+30
+0
+
+
+26
+FALSE
+TRUE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k31
+
+(?<=\bnew\s+class)\b[a-zA-Z0-9\\_::<>,\s\[\]]*+
+FALSE
+FALSE
+31
+0
+
+
+29
+FALSE
+TRUE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k32
+optional (generic) type hint for properties and constants: allow protected array<t> const array = array(); but don't create side effects with k20 and others \o/
+#(?<=(?:public|private|protected|const|static|]|>)\s+)[a-zA-Z0-9\\_::]+([a-zA-Z0-9\\_::<>,\s\[\]]+)?(?=\s+\$?\w)
+FALSE
+FALSE
+0
+0
+
+
+27
+FALSE
+TRUE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k33
+
+<[a-zA-Z0-9\\_::<>,\s\[\]]>
+FALSE
+FALSE
+0
+0
+
+
+25
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+$
+
+(?:(?:(?:=(?:>\s*)?\s*)?&\s*)?(?:(?:\\?[a-zA-Z][a-zA-Z0-9_]*+)*+::)?\${1,}\{?\b[a-zA-Z_][a-zA-Z0-9_]*+\b}?(?:\s*(?:->|::)\s*\${0,}\{?\b[a-zA-Z_][a-zA-Z0-9_]*+\b}?)*)\s*\(?
+FALSE
+FALSE
+31
+0
+
+
+17
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+overload
+
+(?:(?:(?:\)|]|})\s*)?(?:(?:->|::)\s*\${0,}\{?[a-zA-Z_][a-zA-Z0-9_]*+}?)+)\b
+FALSE
+FALSE
+31
+0
+
+
+17
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+op
+
+(?:\|\||\|=|\||\^=|\^|\?\?|\?|>>=|>>|>=|>|=>|===|==|=|<>|<=|<<=|<<|<|;|::|:|/=|/|\.\.\.|\.=|\.|->|-=|--|-|,|\+=|\+\+|\+|\*=|\*|&=|&&|&|%=|%|!==|!=|!)
+FALSE
+FALSE
+31
+0
+
+
+16
+FALSE
+TRUE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+'
+1
+16
+FALSE
+0
+
+
+3
+'
+
+'
+FALSE
+FALSE
+16
+0
+
+
+1
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+'
+php
+FALSE
+'
+{:ptrn}
+
+{:[a-zA-Z0-9_\.-#]*+}?
+FALSE
+FALSE
+16
+0
+
+
+18
+FALSE
+FALSE
+FALSE
+TRUE
+
+
+
+
+FALSE
+
+.
+
+\\.
+FALSE
+FALSE
+16
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+'//x'
+1
+16
+FALSE
+24
+
+
+8
+.
+
+\\.
+FALSE
+FALSE
+16
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+x'
+
+([^A-Za-z0-9(<[{'\s])[imseADSUXJu]{0,11}x[imseADSUXJu]{0,11}'
+FALSE
+FALSE
+18
+0
+
+
+1
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+'/
+php
+FALSE
+
+'
+
+'
+FALSE
+FALSE
+31
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+TRUE
+
+pcre
+
+11
+# PCRE Character class - Rev 20101215_1800
+(\[\^?+)                                     # $1: Character class (CC) opening delim.
+\]?+                                         # Unescaped ] allowed if first char.
+[^[\]\r\n\\]*+(?:\\.[^[\]\r\n\\]*+)*+        # Non-[], escaped-anything (normal*).
+(?: \[                                       # Allow a non-escaped "[", and it
+  (?::\^?+\w++:\])?+                         # may be embedded POSIX char class.
+  [^[\]\r\n\\]*+(?:\\.[^[\]\r\n\\]*+)*+      # More non-[], escaped-anything.
+)*+                                          # Unroll-the-loop (special normal*)*
+( \]                                         # $2: CC closing delim & quantifier.
+  (?:(?:[?*+]|\{\d++(?:,\d*+)?+\})[+?]?+)?+  # Optional CC quantifier.
+)?+                                          # End $2: CC closing delim & quantifier.
+FALSE
+FALSE
+17
+0
+
+
+0
+FALSE
+TRUE
+FALSE
+FALSE
+1
+2
+
+
+FALSE
+]
+#
+
+(\(\?\#)[^)\r\n]*+(\))?+
+FALSE
+FALSE
+9
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+1
+2
+
+
+FALSE
+
+##
+
+4
+\#      (?:(?![^A-Za-z0-9(<[{='\s][ximseADSUXJu]{0,12}+')[^'\r\n\\])*+
+  (?:\\.(?:(?![^A-Za-z0-9(<[{='\s][ximseADSUXJu]{0,12}+')[^'\r\n\\])*+)*+
+
+
+FALSE
+FALSE
+9
+0
+
+
+0
+FALSE
+TRUE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+(pcre
+
+35
+# PCRE Group open (not 'x' mode) - Rev 20101215_1800
+\(                         # Regex group opening "(" delimiter.
+(                          # $1: Optional group type specification.
+  \?                       # All special group types start with a "?".
+  (?:                      # Non-capture group for group types alternatives.
+    [:|>=!]                # Types specified with a single character.
+  | &gt;                   # Atomic group (HTML entity).
+  | &lt;[=!]               # Look behind (HTML entity).
+  | <[=!]                  # Look behind (Note 1).
+  | P?&lt;\w+&gt;          # Named capture group (Python/Perl) (HTML entity).
+  | P?<\w+>                # Named capture group (Python/Perl) (Note 1).
+  | '\w+'                  # Named capturing group (Perl).
+  | (?=<span[^>]*>&\#40;)  # Previously-marked nested generic conditional.
+  | \(                     # Begin conditional group with "(" delimiter.
+    (?:                    # Non-capture group for conditional alternatives.
+      [+\-]?\d+            # Absolute/+-relative reference condition.
+    | &lt;\w+&gt;          # Named reference condition (Perl) (HTML entity).
+    | <\w+>                # Named reference condition (Perl) (Note 1).
+    | '\w+'                # Named reference condition (Perl).
+    | R&amp;\w+            # specific recursion condition (HTML entity).
+    | R&\w+                # specific recursion condition (Note 1).
+    | \w+                  # Named reference condition (PCRE)
+    ) \)                   # End conditional group with ")" delimiter.
+  | (?:                    # Group types that must have zero content.
+      R                    # Recurse whole pattern.
+    | (?:-?[iJmsUx])+      # Flag modifiers (PCRE).
+    | [+\-]?\d+            # Call subpattern by absolute/+-relative number.
+    | &amp;\w+             # Call subpattern by name (Perl) (HTML entity).
+    | &\w+                 # Call subpattern by name (Perl) (Note 1).
+    | P&gt;\w+             # Call subpattern by name (Python) (HTML entity).
+    | P>\w+                # Call subpattern by name (Python) (Note 1).
+    | P=\w+                # Reference by name (Python).
+    )(?=\))                # Ensure this group type has no contents.
+  )                        # End non-capture group of group types alternatives.
+)?                         # End $1: Optional group type specification.
+FALSE
+FALSE
+18
+0
+
+
+0
+FALSE
+TRUE
+FALSE
+FALSE
+0
+
+(pcre)
+regex
+TRUE
+
+pcre)
+
+4
+# PCRE Group close - Rev 20101215_1900
+\)                                         # Regex group closing ")" delimiter
+(?:(?:[?*+]|\{\d++(?:,\d*+)?+\})[+?]?+)?+  # Optional group quantifier.
+
+FALSE
+FALSE
+18
+0
+
+
+0
+FALSE
+TRUE
+FALSE
+FALSE
+
+0
+(pcre)
+regex
+TRUE
+
+'//'
+1
+16
+FALSE
+25
+
+
+7
+.
+
+\\.
+FALSE
+FALSE
+16
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+/'
+
+(((((([^A-Za-z0-9(<[{\s'\\]))))))[imseADSUXJu]{0,11}'
+FALSE
+FALSE
+18
+0
+
+
+1
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+'/
+php
+FALSE
+
+'
+
+'
+FALSE
+FALSE
+31
+0
+
+
+1
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+TRUE
+
+pcre
+
+11
+# PCRE Character class - Rev 20101215_1800
+(\[\^?+)                                     # $1: Character class (CC) opening delim.
+\]?+                                         # Unescaped ] allowed if first char.
+[^[\]\r\n\\]*+(?:\\.[^[\]\r\n\\]*+)*+        # Non-[], escaped-anything (normal*).
+(?: \[                                       # Allow a non-escaped "[", and it
+  (?::\^?+\w++:\])?+                         # may be embedded POSIX char class.
+  [^[\]\r\n\\]*+(?:\\.[^[\]\r\n\\]*+)*+      # More non-[], escaped-anything.
+)*+                                          # Unroll-the-loop (special normal*)*
+( \]                                         # $2: CC closing delim & quantifier.
+  (?:(?:[?*+]|\{\d++(?:,\d*+)?+\})[+?]?+)?+  # Optional CC quantifier.
+)?+                                          # End $2: CC closing delim & quantifier.
+FALSE
+FALSE
+17
+0
+
+
+0
+FALSE
+TRUE
+FALSE
+FALSE
+1
+2
+
+
+FALSE
+]
+#
+
+(\(\?\#)[^)\r\n]*+(\))?+
+FALSE
+FALSE
+9
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+1
+2
+
+
+FALSE
+
+(pcre
+
+35
+# PCRE Group open (not 'x' mode) - Rev 20101215_1800
+\(                         # Regex group opening "(" delimiter.
+(                          # $1: Optional group type specification.
+  \?                       # All special group types start with a "?".
+  (?:                      # Non-capture group for group types alternatives.
+    [:|>=!]                # Types specified with a single character.
+  | &gt;                   # Atomic group (HTML entity).
+  | &lt;[=!]               # Look behind (HTML entity).
+  | <[=!]                  # Look behind (Note 1).
+  | P?&lt;\w+&gt;          # Named capture group (Python/Perl) (HTML entity).
+  | P?<\w+>                # Named capture group (Python/Perl) (Note 1).
+  | '\w+'                  # Named capturing group (Perl).
+  | (?=<span[^>]*>&\#40;)  # Previously-marked nested generic conditional.
+  | \(                     # Begin conditional group with "(" delimiter.
+    (?:                    # Non-capture group for conditional alternatives.
+      [+\-]?\d+            # Absolute/+-relative reference condition.
+    | &lt;\w+&gt;          # Named reference condition (Perl) (HTML entity).
+    | <\w+>                # Named reference condition (Perl) (Note 1).
+    | '\w+'                # Named reference condition (Perl).
+    | R&amp;\w+            # specific recursion condition (HTML entity).
+    | R&\w+                # specific recursion condition (Note 1).
+    | \w+                  # Named reference condition (PCRE)
+    ) \)                   # End conditional group with ")" delimiter.
+  | (?:                    # Group types that must have zero content.
+      R                    # Recurse whole pattern.
+    | (?:-?[iJmsUx])+      # Flag modifiers (PCRE).
+    | [+\-]?\d+            # Call subpattern by absolute/+-relative number.
+    | &amp;\w+             # Call subpattern by name (Perl) (HTML entity).
+    | &\w+                 # Call subpattern by name (Perl) (Note 1).
+    | P&gt;\w+             # Call subpattern by name (Python) (HTML entity).
+    | P>\w+                # Call subpattern by name (Python) (Note 1).
+    | P=\w+                # Reference by name (Python).
+    )(?=\))                # Ensure this group type has no contents.
+  )                        # End non-capture group of group types alternatives.
+)?                         # End $1: Optional group type specification.
+FALSE
+FALSE
+18
+0
+
+
+0
+FALSE
+TRUE
+FALSE
+FALSE
+0
+
+(pcre)
+regex
+TRUE
+
+pcre)
+
+4
+# PCRE Group close - Rev 20101215_1900
+\)                                         # Regex group closing ")" delimiter
+(?:(?:[?*+]|\{\d++(?:,\d*+)?+\})[+?]?+)?+  # Optional group quantifier.
+
+FALSE
+FALSE
+18
+0
+
+
+0
+FALSE
+TRUE
+FALSE
+FALSE
+
+0
+(pcre)
+regex
+TRUE
+
+"
+1
+17
+FALSE
+0
+
+
+7
+"
+
+"
+FALSE
+FALSE
+17
+0
+
+
+1
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+"
+php
+FALSE
+"
+[
+
+\[
+FALSE
+FALSE
+25
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+[]
+php
+FALSE
+]
+]
+
+\]
+FALSE
+FALSE
+25
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+[]
+php
+FALSE
+[
+Number
+
+[+-]?(?:(?:([0-9]+)?[.][0-9]++|[1-9][0-9]*?)|(?:0[0-7]++)|(?:0[xX][a-fA-F0-9]++)|(?:0[bB][01]++)|0|(([0-9]+|([0-9]*[\.][0-9]+)|([0-9]+[\.][0-9]*))[eE][+-]?[0-9]+))\b
+FALSE
+FALSE
+31
+0
+
+
+15
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+$
+
+(?:(?:(?:=(?:>\s*)?\s*)?&\s*)?\${1,}\{?\b[a-zA-Z_][a-zA-Z0-9_]*+\b}?(?:\s*(?:->|::)\s*\${0,}\{?\b[a-zA-Z_][a-zA-Z0-9_]*+\b}?)*)\s*\(?
+FALSE
+FALSE
+31
+0
+
+
+17
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+{:ptrn}
+
+{:[a-zA-Z0-9_\.-#]*+}?
+FALSE
+FALSE
+16
+0
+
+
+18
+FALSE
+FALSE
+FALSE
+TRUE
+
+
+
+
+FALSE
+
+chr
+
+\\(?:r|n|t|v|e|f|\\|\$|"|[0-7]{1,3}|x[0-9A-Fa-f]{1,2}|u[0-9A-Fa-f]+)
+FALSE
+FALSE
+18
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+`
+1
+11
+FALSE
+0
+
+
+8
+`
+
+`
+FALSE
+FALSE
+11
+0
+
+
+1
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+`
+php
+FALSE
+`
+chr
+
+\\(?:r|n|t|v|e|f|\\|\$|"|[0-7]{1,3}|x[0-9A-Fa-f]{1,2}|u[0-9A-Fa-f]+)
+FALSE
+FALSE
+18
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+[
+
+\[
+FALSE
+FALSE
+25
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+[]
+php
+FALSE
+]
+]
+
+\]
+FALSE
+FALSE
+25
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+[]
+php
+FALSE
+[
+Number
+
+[+-]?(?:(?:([0-9]+)?[.][0-9]++|[1-9][0-9]*?)|(?:0[0-7]++)|(?:0[xX][a-fA-F0-9]++)|(?:0[bB][01]++)|0|(([0-9]+|([0-9]*[\.][0-9]+)|([0-9]+[\.][0-9]*))[eE][+-]?[0-9]+))\b
+FALSE
+FALSE
+31
+0
+
+
+15
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+$
+
+(?:(?:(?:=(?:>\s*)?\s*)?&\s*)?\${1,}\{?\b[a-zA-Z_][a-zA-Z0-9_]*+\b}?(?:\s*(?:->|::)\s*\${0,}\{?\b[a-zA-Z_][a-zA-Z0-9_]*+\b}?)*)\s*\(?
+FALSE
+FALSE
+31
+0
+
+
+17
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+{:ptrn}
+
+{:[a-zA-Z0-9_\.-#]*+}?
+FALSE
+FALSE
+11
+0
+
+
+18
+FALSE
+FALSE
+FALSE
+TRUE
+
+
+
+
+FALSE
+
+.
+
+\\.
+FALSE
+FALSE
+11
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+hdoc
+0
+17
+FALSE
+0
+
+
+6
+[
+
+\[
+FALSE
+FALSE
+25
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+[]
+php
+FALSE
+]
+]
+
+\]
+FALSE
+FALSE
+25
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+[]
+php
+FALSE
+[
+Number
+
+[+-]?(?:(?:([0-9]+)?[.][0-9]++|[1-9][0-9]*?)|(?:0[0-7]++)|(?:0[xX][a-fA-F0-9]++)|(?:0[bB][01]++)|0|(([0-9]+|([0-9]*[\.][0-9]+)|([0-9]+[\.][0-9]*))[eE][+-]?[0-9]+))\b
+FALSE
+FALSE
+31
+0
+
+
+15
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+$
+
+(?:(?:(?:=(?:>\s*)?\s*)?&\s*)?\${1,}\{?\b[a-zA-Z_][a-zA-Z0-9_]*+\b}?(?:\s*(?:->|::)\s*\${0,}\{?\b[a-zA-Z_][a-zA-Z0-9_]*+\b}?)*)\s*\(?
+FALSE
+FALSE
+31
+0
+
+
+17
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+{:ptrn}
+
+{:[a-zA-Z0-9_\.-#]*+}?
+FALSE
+FALSE
+16
+0
+
+
+18
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+chr
+
+\\(?:r|n|t|v|e|f|\\|\$|"|[0-7]{1,3}|x[0-9a-f]{1,2}|u[0-9a-f]+)
+TRUE
+FALSE
+18
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+ndoc
+0
+16
+FALSE
+0
+
+
+1
+{:ptrn}
+
+{:[a-zA-Z0-9_\.-#]*+}?
+FALSE
+FALSE
+16
+0
+
+
+18
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+//|#
+0
+9
+FALSE
+0
+
+
+11
+#
+
+\s*(//|#)](?!!|\+|~|-|@).*?$
+FALSE
+TRUE
+9
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+#@
+
+(//|#)@.*?$
+FALSE
+FALSE
+42
+0
+
+
+0
+FALSE
+FALSE
+TRUE
+FALSE
+
+
+
+
+FALSE
+
+#!>
+
+(//|#)!>.*?$
+FALSE
+TRUE
+10
+0
+
+
+0
+FALSE
+FALSE
+TRUE
+FALSE
+
+
+
+
+FALSE
+
+#!
+
+(//|#)!(?!>|!).*?$
+FALSE
+TRUE
+28
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+#!!
+
+(//|#)!!.*?$
+FALSE
+TRUE
+28
+0
+
+
+0
+FALSE
+FALSE
+TRUE
+FALSE
+
+
+
+
+FALSE
+
+#~
+
+(//|#)~(?!~).*?$
+FALSE
+TRUE
+29
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+#~~
+
+(//|#)~.*?$
+FALSE
+TRUE
+29
+0
+
+
+0
+FALSE
+FALSE
+TRUE
+FALSE
+
+
+
+
+FALSE
+
+#-
+
+(//|#)-(?!-)\s.*?$
+FALSE
+TRUE
+30
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+#--
+
+(//|#)--\s.*?$
+FALSE
+TRUE
+30
+0
+
+
+0
+FALSE
+FALSE
+TRUE
+FALSE
+
+
+
+
+FALSE
+
+#+
+
+(//|#)\+(?!\+)\s.*?$
+FALSE
+TRUE
+27
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+#++
+
+(//|#)\+\+\s.*?$
+FALSE
+TRUE
+27
+0
+
+
+0
+FALSE
+FALSE
+TRUE
+FALSE
+
+
+
+
+FALSE
+
+* \
+0
+31
+FALSE
+0
+
+
+8
+p0: prfx
+
+(?<=\*)(?:[^*]|\n|(?:\*|\n))\s*(?:\\|@)\b
+FALSE
+FALSE
+36
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+p1:apitag
+
+(?<=(?:(?<=\*)(?:[^*]|\n|(?:\*|\n))\s*(?:\\|@)))[a-zA-Z[\]{}\.:_,]+
+FALSE
+FALSE
+36
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+p3:param var name
+
+(?<=(?:(?<=\*)(?:[^*]|\n|(?:\*|\n))\s*(?:\\|@)(?:param(?:\[(?:out|in)])?|rtype|memberof)\s*[a-zA-Z:\\]+))\s*[$a-zA-Z0-9_&]+
+FALSE
+FALSE
+39
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+p4:param text
+
+(?<=(?:(?<=\*)(?:[^*]|\n|(?:\*|\n))\s*(?:\\|@)(?:param(?:\[(?:out|in)])?|rtype|memberof|copydoc)\s*[a-zA-Z:\\]+\s*[$a-zA-Z0-9_&]+)).*
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+p3:fn name
+
+(?<=(?:(?<=\*)(?:[^*]|\n|(?:\*|\n))\s*(?:\\|@)(?:fn)\s*[a-zA-Z:\\&]+))\s*[$a-zA-Z0-9_:(){}[\],\s\\&]+
+FALSE
+FALSE
+39
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+p2:type
+
+(?<=(?:(?<=\*)(?:[^*]|\n|(?:\*|\n))\s*(?:\\|@)(?:memberof|fn|param(?:\[(?:out|in)])?|extends|implements|copydoc|copybrief|rtype)))\s+[a-zA-Z:\\&_]+
+FALSE
+FALSE
+37
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+p2:par
+
+(?<=(?:(?<=\*)(?:[^*]|\n|(?:\*|\n))\s*(?:\\|@)par)).*
+FALSE
+FALSE
+7
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+p2:text
+
+(?<=(?:(?<=\*)(?:[^*]|\n|(?:\*|\n))\s*(?:\\|@)[a-zA-Z0-9_{}[\]\.$,]+)).*
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k19
+0
+0
+FALSE
+0
+
+
+2
+k19(
+
+(?:\b[a-zA-Z0-9_]+\b)\s*\(
+FALSE
+FALSE
+24
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+()
+php
+FALSE
+)
+)
+
+\)
+FALSE
+FALSE
+24
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+()
+php
+FALSE
+(
+k10
+0
+0
+FALSE
+0
+
+
+14
+)
+
+\)
+FALSE
+FALSE
+24
+0
+
+
+0
+FALSE
+TRUE
+FALSE
+FALSE
+
+0
+()
+php
+FALSE
+(
+(
+
+\(
+FALSE
+FALSE
+24
+0
+
+
+0
+FALSE
+TRUE
+FALSE
+FALSE
+0
+
+()
+php
+FALSE
+)
+[
+
+\[
+FALSE
+FALSE
+25
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+[param]
+param
+FALSE
+]
+]
+
+]
+FALSE
+FALSE
+25
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+[param]
+param
+FALSE
+[
+'
+
+(')(?:[^'\\]|\\.)*(')
+FALSE
+FALSE
+16
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+1
+2
+'
+php
+FALSE
+
+"
+
+(")(?:[^"\\]|\\.)*(")
+FALSE
+TRUE
+17
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+1
+2
+"
+php
+FALSE
+
+`
+
+(`)(?:[^"\\]|\\.)*(`)
+FALSE
+FALSE
+11
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+1
+2
+`
+php
+FALSE
+
+hint
+
+(?<=(?:,|\()\s*)(?<!\$)\??(?!void|object|resource)(?:[a-zA-Z_\\][a-zA-Z0-9\\_:<>,\s\[\]]*+)(?:\s*\|\s*(?:(?:[a-zA-Z_\\][a-zA-Z0-9\\_:<>,\s\[\]]*+)))*(?=\s*)(?!,)
+FALSE
+FALSE
+31
+0
+
+
+27
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+Number
+
+[+-]?(?:(?:([0-9]+)?[.][0-9]++|[1-9][0-9]*?)|(?:0[0-7]++)|(?:0[xX][a-fA-F0-9]++)|(?:0[bB][01]++)|0|(([0-9]+|([0-9]*[\.][0-9]+)|([0-9]+[\.][0-9]*))[eE][+-]?[0-9]+))\b
+FALSE
+FALSE
+31
+0
+
+
+15
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+w16
+
+\b(?<!(?:const|function)\s*)(?:true|false|null)\b
+TRUE
+FALSE
+6
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+&$
+
+&\s*\$\b[a-zA-Z_][a-zA-Z0-9_]*+\b
+FALSE
+FALSE
+4
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+$
+
+(?:(?:(?:=(?:>\s*)?\s*)?&\s*)?\${1,}\{?\b[a-zA-Z_][a-zA-Z0-9_]*+\b}?(?:\s*(?:->|::)\s*\${0,}\{?\b[a-zA-Z_][a-zA-Z0-9_]*+\b}?)*)\s*\(?
+FALSE
+FALSE
+31
+0
+
+
+17
+FALSE
+TRUE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+op
+
+(?:[+-/\*&%=!?:<>|^\.,;]+)
+FALSE
+FALSE
+0
+0
+
+
+16
+FALSE
+TRUE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+array(
+
+(?:\b(?<!\b(?:const|function)\b\s*)(?:array|declare|define|die|elseif|empty|eval|for(each)?|function|if|isset|list|switch|unset|while)\s*)\(\s*
+FALSE
+FALSE
+19
+0
+
+
+13
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+k10()
+php
+FALSE
+)
+num
+0
+0
+FALSE
+0
+
+
+12
+what
+
+[-+]?\b(([0-9]+|([0-9]*[\.][0-9]+)|([0-9]+[\.][0-9]*))[eE][+-]?[0-9]+)\b
+FALSE
+FALSE
+19
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+hex 2^n
+
+[-+]?\b0[Xx](?:[0-9a-fA-F]{2}|[0-9a-fA-F]{4}|[0-9a-fA-F]{8}|[0-9a-fA-F]{16}|[0-9a-fA-F]{32}|[0-9a-fA-F]{64})\b
+FALSE
+FALSE
+20
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+hex 2n
+
+[-+]?\b0x(?:[0-9a-f]{2})+\b
+TRUE
+FALSE
+19
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+hex 2n-1
+
+[-+]?\b0[Xx][0-9a-fA-F]+([Uu](L|l|LL|ll)?|(L|l|LL|ll)[Uu]?)?\b
+FALSE
+FALSE
+29
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+bin 2^n
+
+[-+]?\b0[Bb](?:[01]{2}|[01]{4}|[01]{8}|[01]{16}|[01]{32}|[01]{64})\b
+FALSE
+FALSE
+20
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+bin2n
+
+[-+]?\b0b(?:[01]{2})+\b
+TRUE
+FALSE
+19
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+bin 2n-1
+
+[-+]?\b0[Bb][01]+([Uu](L|l|LL|ll)?|(L|l|LL|ll)[Uu]?)?\b
+FALSE
+FALSE
+29
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+oct
+
+[-+]?\b0[0-7]*([Uu](L|l|LL|ll)?|(L|l|LL|ll)[Uu]?)?\b
+FALSE
+FALSE
+19
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+dec
+
+[-+]?\b(?:[1-9][0-9]*?)([Uu](L|l|LL|ll)?|(L|l|LL|ll)[Uu]?)?\b
+FALSE
+FALSE
+19
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+fltsrt
+
+[+-]?\.\b([0-9]+)\b
+FALSE
+FALSE
+19
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+fltdec
+
+[-+]?\b([0-9]*?[.][0-9]+|[0-9]+?[.])([Ee][-+]?[0-9]+)?[flFL]?[0-9]+([Ee][-+]?[0-9]+)[flFL]?\b
+FALSE
+FALSE
+19
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+flthex
+
+[-+]?\b0[Xx]([0-9a-fA-F]*\.[0-9a-fA-F]+|[0-9a-fA-F]+\.?)[Pp][-+]?[0-9]+[flFL]?\b
+FALSE
+FALSE
+19
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+op
+0
+0
+FALSE
+0
+
+
+12
+;
+
+;$
+FALSE
+FALSE
+35
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+,
+
+,$
+FALSE
+FALSE
+34
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+...
+
+(?:\.\.\.)$
+FALSE
+FALSE
+24
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+di
+
+(?:\+\+|--)$
+FALSE
+FALSE
+19
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+ternary
+
+(?:\?\s*:|\?|(?<!:)\:)$
+FALSE
+FALSE
+24
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+concat
+
+(?:\.=|\.)$
+FALSE
+FALSE
+4
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+assign
+
+(?:=>|=)$
+FALSE
+FALSE
+23
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+arithmetic assign
+
+(?:\+=|-=|\*=|/=|%=|\.=)$
+FALSE
+FALSE
+11
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+bitwise assign
+
+(?:&=|\|=|\^=|<<=|>>=|=)$
+FALSE
+FALSE
+11
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+arithmetic
+
+(?:\+|-|\*|/|%)$
+FALSE
+FALSE
+23
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+bitwise
+
+(?:&|\||\^|<<|>>)$
+FALSE
+FALSE
+23
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+comparison
+
+(?:>=|<=|===|==|!==|!=|!|<>|\|\||&&|<|>|\?\?)$
+FALSE
+FALSE
+23
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+$
+0
+0
+FALSE
+0
+
+
+12
+&
+restore origin
+(?<!(?:=>|=|,|\()\s*)&
+FALSE
+FALSE
+23
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+(
+
+\(
+FALSE
+FALSE
+24
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+()
+php
+FALSE
+)
+=
+restore origin
+\s*(?:=>|=)(?<!\$)
+FALSE
+FALSE
+23
+0
+
+
+0
+FALSE
+TRUE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+$__
+
+(?:(?:(?<!::)\$)|\$\$+)__([a-zA-Z0-9_]*+)\b
+FALSE
+FALSE
+40
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+$_
+
+(?:(?:(?<!::)\$)|\$+)?_([a-zA-Z][a-zA-Z0-9_]*+)\b
+FALSE
+FALSE
+41
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+->
+
+(?:->)
+FALSE
+FALSE
+14
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+::
+
+(?:::)
+FALSE
+FALSE
+4
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+::p
+
+(?<=::)\s*\b([a-zA-Z_][a-zA-Z0-9_]*+)\b
+FALSE
+FALSE
+14
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+$$p
+
+(?:(?<=(?:->|\$))\${1,}|\${2,}|\$+\{)[a-zA-Z_][a-zA-Z0-9_]*+\b}?
+FALSE
+FALSE
+6
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+&$p
+
+(?<=\s*(?:=|=>|\(|,)\s*)&\s*(?:(?:(?:\\?[a-zA-Z][a-zA-Z0-9_]*+)*+::)?\$+\b[a-zA-Z_][a-zA-Z0-9_]*+\b)
+FALSE
+FALSE
+4
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+$this
+
+\$this\b(?:->)?
+FALSE
+FALSE
+14
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+$
+
+(?:(?:\)|]|})\s*)?(?(?<=->)\s*|\$)\b([a-zA-Z_][a-zA-Z0-9_]*+)\b
+FALSE
+FALSE
+14
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+{:x}
+0
+16
+FALSE
+20
+
+
+2
+{:ptrn
+
+{:[a-zA-Z0-9_\.-#]*+
+FALSE
+FALSE
+18
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+{:ptrn}
+ptrn
+FALSE
+}
+ptrn}
+
+}
+FALSE
+FALSE
+18
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+{:ptrn}
+ptrn
+FALSE
+{:
+/**/
+1
+9
+TRUE
+0
+
+
+1
+Closing */
+
+\*/
+FALSE
+FALSE
+9
+0
+
+
+1
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+/**/
+php
+FALSE
+/*
+/***/
+1
+36
+TRUE
+0
+
+
+4
+*/
+
+\*/
+FALSE
+FALSE
+36
+0
+
+
+1
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+/***/
+php
+FALSE
+/**
+api
+
+(?<=\s+\*)\s(?:\\|@)[a-zA-Z0-9_{}, ]+.*$
+FALSE
+FALSE
+0
+0
+
+
+12
+FALSE
+TRUE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+sline
+
+(?<=\*\*).*(?=\*/)
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+TRUE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+mline
+
+(?<=\s+\*)\s.*(?<!\s*\*/)
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+TRUE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+/*+*/
+1
+27
+TRUE
+27
+
+
+1
+*/
+
+\*/
+FALSE
+FALSE
+0
+0
+
+
+1
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+/*+*/
+php
+FALSE
+/*+
+/*!*/
+1
+28
+TRUE
+28
+
+
+1
+*/
+
+\*/
+FALSE
+FALSE
+0
+0
+
+
+1
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+/*!*/
+php
+FALSE
+/*!
+/*~*/
+1
+29
+TRUE
+29
+
+
+1
+*/
+
+\*/
+FALSE
+FALSE
+0
+0
+
+
+1
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+/*~*/
+php
+FALSE
+/*~
+/*-*/
+1
+30
+TRUE
+30
+
+
+1
+*/
+
+\*/
+FALSE
+FALSE
+0
+0
+
+
+1
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+/*-*/
+php
+FALSE
+/*-
+class<T>
+0
+0
+FALSE
+0
+
+
+7
+k18
+
+\b(?:class|interface|trait|extends|implements)\b
+FALSE
+FALSE
+12
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k9
+
+(?:\bnew\s+class)
+FALSE
+FALSE
+35
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+<
+
+<
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+<>
+<param>
+FALSE
+>
+>
+
+>
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+<>
+<param>
+FALSE
+<
+,
+
+,
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+[
+
+\[
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+[]
+php
+FALSE
+]
+]
+
+]
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+[]
+php
+FALSE
+]
+function<T>
+0
+0
+FALSE
+0
+
+
+5
+<
+
+<
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+<>
+<param>
+FALSE
+>
+>
+
+>
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+<>
+<param>
+FALSE
+<
+,
+
+,
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+[
+
+\[
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+[]
+php
+FALSE
+]
+]
+
+]
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+[]
+php
+FALSE
+]
+param<T>
+0
+38
+FALSE
+0
+
+
+7
+<
+
+<
+FALSE
+FALSE
+9
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+<>
+<param>
+FALSE
+>
+|
+
+\|
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+>
+
+>
+FALSE
+FALSE
+9
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+<>
+<param>
+FALSE
+<
+,
+
+,
+FALSE
+FALSE
+9
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+
+
+\?
+FALSE
+FALSE
+5
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+[
+
+\[
+FALSE
+FALSE
+38
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+[]
+php
+FALSE
+]
+]
+
+]
+FALSE
+FALSE
+38
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+[]
+php
+FALSE
+]
+return<T>
+0
+38
+FALSE
+0
+
+
+7
+<
+
+<
+FALSE
+FALSE
+9
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+<>
+<param>
+FALSE
+>
+>
+
+>
+FALSE
+FALSE
+9
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+<>
+<param>
+FALSE
+<
+,
+
+,
+FALSE
+FALSE
+9
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+
+
+\?
+FALSE
+FALSE
+5
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+[
+
+\[
+FALSE
+FALSE
+38
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+[]
+php
+FALSE
+]
+]
+
+]
+FALSE
+FALSE
+38
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+[]
+php
+FALSE
+]
+|
+
+\|
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+anon class<T>
+0
+0
+FALSE
+0
+
+
+7
+k18
+
+\b(?:class|interface|trait|extends|implements)\b
+FALSE
+FALSE
+12
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+k9
+
+(?:\bnew\s+class)
+FALSE
+FALSE
+35
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+<
+
+<
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+<>
+<param>
+FALSE
+>
+>
+
+>
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+<>
+<param>
+FALSE
+<
+,
+
+,
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+
+
+
+FALSE
+
+[
+
+\[
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+0
+
+[]
+php
+FALSE
+]
+]
+
+]
+FALSE
+FALSE
+10
+0
+
+
+0
+FALSE
+FALSE
+FALSE
+FALSE
+
+0
+[]
+php
+FALSE
+]
